@@ -19,10 +19,10 @@ export function initCalendarAPI() {
 }
 
 function initClient() {
-  var gapi = window['gapi'];
+  let gapi = window['gapi'];
 
+  // get saved token
   let token = checkTokenInStorage();
-
   if (token) {
     gapi.client.setToken(token);
     return;
