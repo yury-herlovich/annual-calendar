@@ -18,6 +18,37 @@ export function initCalendarAPI() {
   return true;
 }
 
+export function apiGetEvents() {
+  return getGAPIInstance()
+    .then(gapi => {
+      return gapi.client.request({
+        path: `https://www.googleapis.com/calendar/v3/calendars/${process.env.REACT_APP_CALENDAR_ID}/events`,
+        method: 'GET',
+        params: {
+          key: process.env.REACT_APP_CALENDAR_API_KEY,
+          maxResults: 100,
+          timeMax: null,
+          timeMin: null
+        }
+      })
+    });
+}
+
+function getGAPIInstance() {
+  let gapi = window['gapi'];
+
+  if (gapi !== undefined && gapi.auth2 !== undefined) {
+    return Promise.resolve(gapi);
+  } else {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        getGAPIInstance().then(gapi => resolve(gapi));
+      }, 100);
+    })
+  }
+}
+
+
 function initClient() {
   let gapi = window['gapi'];
 

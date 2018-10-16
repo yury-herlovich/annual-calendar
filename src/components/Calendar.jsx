@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { setYear } from '../actions/calendarActions';
+import { createCalendar } from '../actions/calendarActions';
 
 class Calendar extends Component {
   componentDidMount(){
     const date = new Date();
-    this.props.setYear(date.getFullYear());
+    this.props.createCalendar(date.getFullYear());
   }
 
   render() {
@@ -16,7 +16,7 @@ class Calendar extends Component {
 
 const mapStateToProps = state => ({});
 const mapDispatchToProps = {
-  setYear
+  createCalendar
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Calendar);
