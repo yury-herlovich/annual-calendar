@@ -1,0 +1,18 @@
+.day {
+  border-right: 1px solid #cccccc;
+}
+
+.day:nth-child(2) {
+  border-left: 1px solid #cccccc;
+}
+
+.day-header {
+  padding: 0 1px;
+  text-align: right;
+  font-size: 65%;
+  color: #666;
+}
+
+.today {
+  background-color: #ebffe7;
+}
