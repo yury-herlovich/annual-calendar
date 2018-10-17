@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import moment from 'moment';
 import './Calendar.css';
 
 import { generateCalendar } from '../utils/utils';
@@ -12,7 +13,8 @@ class Calendar extends Component {
     super();
 
     this.state = {
-      calendar: []
+      calendar: [],
+      events: []
     }
   }
 
@@ -21,13 +23,45 @@ class Calendar extends Component {
     this.createCalendar(date.getFullYear());
   }
 
+  static getDerivedStateFromProps = (nextProps, prevState) => {
+    let calendar = JSON.parse(JSON.stringify(prevState.calendar));
+
+    if (nextProps.events.length === 0) {
+      return {events: []};
+    }
+
+    nextProps.events.forEach((item) => {
+      let startDate = item.start.dateTime ? moment(item.start.dateTime) : moment(item.start.date);
+      let endDate = item.end.dateTime ? moment(item.end.dateTime) : moment(item.end.date);
+
+      while (startDate.diff(endDate) <= 0) {
+        let mId = startDate.month();  // month 0-11
+        let dId = startDate.date() -1;  // days 1-31
+
+        if (calendar[mId] && calendar[mId].days[dId]) {
+          calendar[mId].days[dId].events.push({
+            title: item.summary,
+            id: item.id
+          });
+        }
+
+        startDate.add(1, 'd');
+      }
+    });
+
+    return {
+      events: nextProps.events,
+      calendar
+    };
+  }
+
   createCalendar = (year) => {
     this.props.setYear(year);
     this.props.getEvents(year);
 
     let calendar = generateCalendar(year);
 
-    this.setState({calendar});
+    this.setState({calendar, events: []});
   }
 
   render() {
@@ -45,7 +79,11 @@ class Calendar extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  events: state.calendar.events,
+  year: state.calendar.year
+});
+
 const mapDispatchToProps = {
   setYear,
   getEvents
