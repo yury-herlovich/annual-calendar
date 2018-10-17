@@ -35,6 +35,8 @@ class Calendar extends Component {
       let endDate = item.end.dateTime ? moment(item.end.dateTime) : moment(item.end.date);
 
       while (startDate.diff(endDate) <= 0) {
+        if (startDate.year() !== nextProps.year) break;
+
         let mId = startDate.month();  // month 0-11
         let dId = startDate.date() -1;  // days 1-31
 
