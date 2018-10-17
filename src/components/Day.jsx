@@ -4,17 +4,28 @@ import './Day.css';
 
 import Event from './Event';
 
-const Day = ({dayData, handleModalOpen}) => (
-  <div
-    className={'day' + (moment().startOf('date').diff(dayData.date, 'hours') === 0 ? ' today' : '')}
-    onClick={(e) => handleModalOpen(e, dayData.events)}
-  >
-    <header className="day-header">{moment(dayData.date).format('ddd/DD')}</header>
+const Day = ({dayData, handleModalOpen}) => {
+  let dayClass = ['day'];
 
-    { dayData.events.map((item) => (
-      <Event key={item.id} event={item} />
-    ))}
-  </div>
-);
+  if (moment().startOf('date').diff(dayData.date, 'hours') === 0) {
+    dayClass.push('today');
+  }
+
+  if (dayData.events.length > 0) {
+    dayClass.push('day-with-events');
+  }
+
+  return (
+    <div
+      className={dayClass.join(' ')}
+      onClick={(e) => handleModalOpen(e, dayData.events)}>
+      <header className="day-header">{moment(dayData.date).format('ddd/DD')}</header>
+
+      { dayData.events.map((item) => (
+        <Event key={item.id} event={item} />
+      ))}
+    </div>
+  )
+};
 
 export default Day;
