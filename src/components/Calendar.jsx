@@ -7,12 +7,16 @@ import { generateCalendar } from '../utils/utils';
 import { setYear, getEvents } from '../actions/calendarActions';
 
 import Month from './Month';
+import Modal from './Modal';
 
 class Calendar extends Component {
   constructor() {
     super();
 
     this.state = {
+      modalIsOpen: false,
+      modalEvents: [],
+      modalClickPos: {},
       calendar: [],
       events: []
     }
@@ -24,11 +28,10 @@ class Calendar extends Component {
   }
 
   static getDerivedStateFromProps = (nextProps, prevState) => {
-    let calendar = JSON.parse(JSON.stringify(prevState.calendar));
+    if (nextProps.events.length === 0 && prevState.events.length === 0) return {};
+    if (nextProps.events === prevState.events) return {};
 
-    if (nextProps.events.length === 0) {
-      return {events: []};
-    }
+    let calendar = JSON.parse(JSON.stringify(prevState.calendar));
 
     nextProps.events.forEach((item) => {
       let startDate = item.start.dateTime ? moment(item.start.dateTime) : moment(item.start.date);
@@ -66,6 +69,24 @@ class Calendar extends Component {
     this.setState({calendar, events: []});
   }
 
+  handleModalOpen = (e, events) => {
+    if (events.length <= 0) return;
+
+    this.setState({
+      modalIsOpen: true,
+      modalEvents: events,
+      modalClickPos: {x: e.screenX, y: e.screenY}
+    });
+  }
+
+  handleModalClose = () => {
+    this.setState({
+      modalIsOpen: false,
+      modalEvents: [],
+      modalClickPos: {}
+    });
+  }
+
   render() {
     if (this.state.calendar.length === 0) {
       return null;
@@ -74,8 +95,13 @@ class Calendar extends Component {
     return (
       <main id="calendar">
         { this.state.calendar.map((item) => (
-          <Month key={item.id} days={item.days} date={item.date} />
+          <Month key={item.id} days={item.days} date={item.date} handleModalOpen={this.handleModalOpen} />
         ))}
+        <Modal
+          modalIsOpen={this.state.modalIsOpen}
+          handleClose={this.handleModalClose}
+          events={this.state.modalEvents}
+          clickPos={this.state.modalClickPos} />
       </main>
     );
   }

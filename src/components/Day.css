@@ -16,3 +16,7 @@
 .today {
   background-color: #ebffe7;
 }
+
+.day-with-events {
+  cursor: pointer;
+}
