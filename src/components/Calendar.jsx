@@ -38,7 +38,7 @@ class Calendar extends Component {
     return (
       <main id="calendar">
         { this.state.calendar.map((item) => (
-          <Month key={item.id} days={item.days} title={item.title} />
+          <Month key={item.id} days={item.days} date={item.date} />
         ))}
       </main>
     );

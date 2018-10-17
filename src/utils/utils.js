@@ -7,7 +7,7 @@ export function generateCalendar(year) {
   for (let i = 0; i < 12; i++) {
     let month = {
       id: `${year}${date.format('MM')}`,
-      title: date.format('MMM'),
+      date: date.toISOString(),
       days: []
     };
 
@@ -15,8 +15,7 @@ export function generateCalendar(year) {
     while (date.get('month') === i) {
       month.days.push({
         id: `${year}${date.format('MM')}${date.format('DD')}`,
-        date: date.format('DD'),
-        dayTitle: date.format('ddd'),
+        date: date.toISOString(),
         events: []
       });
       date.add(1, 'day');
