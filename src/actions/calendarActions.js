@@ -1,13 +1,10 @@
 import { apiGetEvents } from '../api/calendarAPI';
 import * as actionTypes from '../constants/actionTypes';
 
-import { generateCalendar } from '../utils/utils';
-
-export function createCalendar(year) {
+export function setYear(year) {
   return (dispatch) => {
     dispatch({ type: actionTypes.SET_YEAR, year });
     dispatch({ type: actionTypes.CLEAR_EVENTS });
-    dispatch(getEvents(year));
   }
 }
 

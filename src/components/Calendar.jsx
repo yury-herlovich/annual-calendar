@@ -1,12 +1,30 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { createCalendar } from '../actions/calendarActions';
+import { generateCalendar } from '../utils/utils';
+import { setYear, getEvents } from '../actions/calendarActions';
 
 class Calendar extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      calendar: []
+    }
+  }
+
   componentDidMount(){
     const date = new Date();
-    this.props.createCalendar(date.getFullYear());
+    this.createCalendar(date.getFullYear());
+  }
+
+  createCalendar = (year) => {
+    this.props.setYear(year);
+    this.props.getEvents(year);
+
+    let calendar = generateCalendar(year);
+
+    this.setState({calendar});
   }
 
   render() {
@@ -16,7 +34,8 @@ class Calendar extends Component {
 
 const mapStateToProps = state => ({});
 const mapDispatchToProps = {
-  createCalendar
+  setYear,
+  getEvents
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Calendar);
