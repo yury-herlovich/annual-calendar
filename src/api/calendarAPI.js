@@ -18,7 +18,8 @@ export function initCalendarAPI() {
   return true;
 }
 
-export function apiGetEvents() {
+
+export function apiGetEvents(startDate, endDate) {
   return getGAPIInstance()
     .then(gapi => {
       return gapi.client.request({
@@ -27,12 +28,13 @@ export function apiGetEvents() {
         params: {
           key: process.env.REACT_APP_CALENDAR_API_KEY,
           maxResults: 100,
-          timeMax: null,
-          timeMin: null
+          timeMax: endDate.toISOString(),
+          timeMin: startDate.toISOString()
         }
       })
     });
 }
+
 
 function getGAPIInstance() {
   let gapi = window['gapi'];
