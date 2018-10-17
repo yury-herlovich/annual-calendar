@@ -7,6 +7,7 @@ export function generateCalendar(year) {
   for (let i = 0; i < 12; i++) {
     let month = {
       id: `${year}${date.format('MM')}`,
+      title: date.format('MMM'),
       days: []
     };
 

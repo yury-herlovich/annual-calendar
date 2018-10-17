@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { generateCalendar } from '../utils/utils';
 import { setYear, getEvents } from '../actions/calendarActions';
 
+import Month from './Month';
+
 class Calendar extends Component {
   constructor() {
     super();
@@ -28,7 +30,15 @@ class Calendar extends Component {
   }
 
   render() {
-    return null;
+    if (this.state.calendar.length === 0) {
+      return null;
+    }
+
+    return (
+      this.state.calendar.map((item) => (
+        <Month key={item.id} days={item.days} title={item.title} />
+      ))
+    );
   }
 }
 
