@@ -30,3 +30,8 @@
   border-left: 1px solid #cccccc;
 }
 
+.day-header {
+  padding: 0 1px;
+  text-align: right;
+  font-size: 65%;
+}

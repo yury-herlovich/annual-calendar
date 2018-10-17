@@ -7,7 +7,7 @@ const Month = ({days, title}) => (
     <header className="month-header">{title}</header>
 
     { days.map((item) => (
-      <Day key={item.id} />
+      <Day key={item.id} item={item} />
     ))}
   </section>
 );
