@@ -8,7 +8,7 @@ const Month = ({days, date}) => (
     <header className="month-header">{moment(date).format('MMM')}</header>
 
     { days.map((item) => (
-      <Day key={item.id} item={item} />
+      <Day key={item.id} dayData={item} />
     ))}
   </section>
 );
