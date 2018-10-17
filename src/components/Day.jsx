@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Day = () => (
-  <div>day</div>
+  <div className="day">day</div>
 );
 
 export default Day;

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import './Calendar.css';
 
 import { generateCalendar } from '../utils/utils';
 import { setYear, getEvents } from '../actions/calendarActions';
@@ -35,9 +36,11 @@ class Calendar extends Component {
     }
 
     return (
-      this.state.calendar.map((item) => (
-        <Month key={item.id} days={item.days} title={item.title} />
-      ))
+      <main id="calendar">
+        { this.state.calendar.map((item) => (
+          <Month key={item.id} days={item.days} title={item.title} />
+        ))}
+      </main>
     );
   }
 }

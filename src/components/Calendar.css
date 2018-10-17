@@ -1,0 +1,32 @@
+#calendar {
+  display: grid;
+  box-sizing: border-box;
+  min-height: 100vh;
+  padding: 10px;
+  grid-template-rows: repeat(12, 1fr [month]);
+}
+
+.month {
+  display: grid;
+  grid-template-columns: 1.2fr repeat(31, 1fr [day]);
+  justify-items: stretch;
+  border-bottom: 1px solid #cccccc;
+}
+
+.month:first-child {
+  border-top: 1px solid #cccccc;
+}
+
+.month-header {
+  justify-self: center;
+  align-self: center;
+}
+
+.day {
+  border-right: 1px solid #cccccc;
+}
+
+.day:nth-child(2) {
+  border-left: 1px solid #cccccc;
+}
+
