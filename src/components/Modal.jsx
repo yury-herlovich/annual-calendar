@@ -10,11 +10,13 @@ const Modal = ({clickPos, modalIsOpen, handleClose, events}) => {
     <ReactModal
       isOpen={modalIsOpen}
       onRequestClose={handleClose}
-      style={{overlay: {'background-color': 'rgba(0, 0, 0, 0.15)'}, content: modalPos}}>
+      style={{overlay: {backgroundColor: 'rgba(0, 0, 0, 0.15)'}, content: modalPos}}>
 
       { events.length > 0 &&
-        events.map((item) => (
-          <header>{item.title}</header>
+        events.map((item, i) => (
+          <section key={i}>
+            <header>{item.title}</header>
+          </section>
         ))
       }
     </ReactModal>
