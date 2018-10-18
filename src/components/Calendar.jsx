@@ -6,6 +6,7 @@ import './Calendar.css';
 import { generateCalendar } from '../utils/utils';
 import { setYear, getEvents } from '../actions/calendarActions';
 
+import Header from './Header';
 import Month from './Month';
 import Modal from './Modal';
 
@@ -62,11 +63,11 @@ class Calendar extends Component {
 
   createCalendar = (year) => {
     this.props.setYear(year);
-    this.props.getEvents(year);
 
     let calendar = generateCalendar(year);
-
     this.setState({calendar, events: []});
+
+    this.props.getEvents(year);
   }
 
   handleModalOpen = (e, events) => {
@@ -87,21 +88,40 @@ class Calendar extends Component {
     });
   }
 
-  render() {
-    if (this.state.calendar.length === 0) {
-      return null;
-    }
+  handlePrevYearClick = () => {
+    let year = this.props.year - 1;
+    this.createCalendar(year);
+  }
 
+  handleNextYearClick = (e) => {
+    let year = this.props.year + 1;
+    this.createCalendar(year);
+  }
+
+  render() {
     return (
       <main id="calendar">
-        { this.state.calendar.map((item) => (
-          <Month key={item.id} days={item.days} date={item.date} handleModalOpen={this.handleModalOpen} />
-        ))}
+        <Header
+          year={this.props.year}
+          handlePrevYearClick={this.handlePrevYearClick}
+          handleNextYearClick={this.handleNextYearClick}
+          />
+
+        { this.state.calendar.length === 0 ?
+
+          null :
+
+          this.state.calendar.map((item) => (
+            <Month key={item.id} days={item.days} date={item.date} handleModalOpen={this.handleModalOpen} />
+          ))
+        }
+
         <Modal
           modalIsOpen={this.state.modalIsOpen}
           handleClose={this.handleModalClose}
           events={this.state.modalEvents}
           clickPos={this.state.modalClickPos} />
+
       </main>
     );
   }

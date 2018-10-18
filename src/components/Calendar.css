@@ -3,7 +3,7 @@
   box-sizing: border-box;
   min-height: 100vh;
   padding: 10px;
-  grid-template-rows: repeat(12, 1fr [month]);
+  grid-template-rows: 35px repeat(12, 1fr [month]);
 }
 
 .month {
