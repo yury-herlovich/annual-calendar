@@ -1,50 +1,73 @@
 const CLIENT_ID = process.env.REACT_APP_CALENDAR_CLIENT_ID;
 const API_KEY = process.env.REACT_APP_CALENDAR_API_KEY;
 const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
-//const CALENDAR_ID = process.env.REACT_APP_CALENDAR_ID;
+const CALENDAR_ID = process.env.REACT_APP_CALENDAR_ID;
 const STORAGE_TOKEN_DATA = 'googleAPIToken';
 
 // Authorization scopes required by the API; multiple scopes can be included, separated by spaces.
 const SCOPES = "https://www.googleapis.com/auth/calendar.readonly";
+
+let gapiLoaded = false;
+let clientIsInit = false;
+let tokenExpiresAt = null;
 
 export function initCalendarAPI() {
   const script = document.createElement("script");
   script.src = "https://apis.google.com/js/api.js";
   document.body.appendChild(script);
   script.onload = () => {
-    window['gapi'].load('client:auth2', initClient);
+    window['gapi'].load('client:auth2', () => {
+      gapiLoaded = true;
+    });
   };
-
-  return true;
 }
 
 
 export function apiGetEvents(startDate, endDate) {
-  return getGAPIInstance()
-    .then(gapi => {
-      return gapi.client.request({
-        path: `https://www.googleapis.com/calendar/v3/calendars/${process.env.REACT_APP_CALENDAR_ID}/events`,
-        method: 'GET',
-        params: {
-          key: process.env.REACT_APP_CALENDAR_API_KEY,
-          maxResults: 100,
-          timeMax: endDate.toISOString(),
-          timeMin: startDate.toISOString()
-        }
-      })
-    });
+  let path = `https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events`;
+  let method = 'GET';
+  let params = {
+    key: process.env.REACT_APP_CALENDAR_API_KEY,
+    maxResults: 100,
+    timeMax: endDate.toISOString(),
+    timeMin: startDate.toISOString()
+  }
+
+  return sendApiRequest(path, method, params);
 }
 
 
-function getGAPIInstance() {
-  let gapi = window['gapi'];
+async function sendApiRequest(path, method, params) {
+  let gapi = await getGAPIInstance();
 
-  if (gapi !== undefined && gapi.auth2 !== undefined) {
-    return Promise.resolve(gapi);
+  return gapi.client.request({
+    path,
+    method,
+    params
+  });
+}
+
+
+async function getGAPIInstance() {
+  if (!gapiLoaded) {
+    await waitGAPIloading();
+  }
+
+  if (!clientIsInit || Date.now() - 2000 > tokenExpiresAt) {
+    await initClient();
+  }
+
+  return Promise.resolve(window['gapi']);
+}
+
+
+function waitGAPIloading() {
+  if (gapiLoaded) {
+    return Promise.resolve(true);
   } else {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        getGAPIInstance().then(gapi => resolve(gapi));
+        waitGAPIloading().then(() => resolve(true));
       }, 100);
     })
   }
@@ -58,10 +81,14 @@ function initClient() {
   let token = checkTokenInStorage();
   if (token) {
     gapi.client.setToken(token);
-    return;
+
+    clientIsInit = true;
+    tokenExpiresAt = token.expires_at;
+
+    return Promise.resolve(true);
   }
 
-  gapi.client.init({
+  return gapi.client.init({
     apiKey: API_KEY,
     clientId: CLIENT_ID,
     discoveryDocs: DISCOVERY_DOCS,
@@ -69,10 +96,15 @@ function initClient() {
   }).then(function () {
     return gapi.auth2.getAuthInstance().signIn();
   }).then(user => {
-    saveTokenToStorage(user.Zi);
-  }).catch((err) => {
-    console.log(err);
-  });
+    let token = user.Zi;
+
+    saveTokenToStorage(token);
+
+    clientIsInit = true;
+    tokenExpiresAt = token.expires_at;
+
+    return Promise.resolve(true);
+  }).catch((err) => {console.log(err)});
 }
 
 
