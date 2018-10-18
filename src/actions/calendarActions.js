@@ -13,9 +13,15 @@ export function getEvents(year) {
   const endDate = new Date(Date.UTC(year, 11, 31, 0, 0, 0));
 
   return (dispatch) => {
+    dispatch({ type: actionTypes.SET_LOADING, isLoading: true });
+
     apiGetEvents(startDate, endDate)
       .then(res => {
         dispatch({ type: actionTypes.ADD_EVENTS, events: res.result.items });
-      }).catch(err => console.log(err));
+        dispatch({ type: actionTypes.SET_LOADING, isLoading: false });
+      }).catch(err => {
+        console.log(err);
+        dispatch({ type: actionTypes.SET_LOADING, isLoading: false });
+      });
   }
 }

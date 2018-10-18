@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import './Calendar.css';
+import LoadingAnim from './LoadingAnim';
 
 import { generateCalendar } from '../utils/utils';
 import { setYear, getEvents } from '../actions/calendarActions';
@@ -99,6 +100,8 @@ class Calendar extends Component {
   render() {
     return (
       <main id="calendar">
+        <LoadingAnim isLoading={this.props.isLoading} />
+
         <Header
           year={this.props.year}
           handlePrevYearClick={this.handlePrevYearClick}
@@ -127,7 +130,8 @@ class Calendar extends Component {
 
 const mapStateToProps = state => ({
   events: state.calendar.events,
-  year: state.calendar.year
+  year: state.calendar.year,
+  isLoading: state.calendar.isLoading
 });
 
 const mapDispatchToProps = {

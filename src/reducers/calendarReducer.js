@@ -2,7 +2,8 @@ import * as actionTypes from '../constants/actionTypes';
 
 const initialState = {
   year: null,
-  events: []
+  events: [],
+  isLoading: false
 }
 
 export default (state=initialState, action) => {
@@ -25,6 +26,12 @@ export default (state=initialState, action) => {
         ...state,
         events: state.events.concat(action.events)
       };
+
+    case actionTypes.SET_LOADING:
+      return {
+        ...state,
+        isLoading: action.isLoading
+      }
 
     default:
       return state;
