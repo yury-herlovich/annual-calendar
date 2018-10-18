@@ -38,8 +38,8 @@ class Calendar extends Component {
       let startDate = item.start.dateTime ? moment(item.start.dateTime) : moment(item.start.date);
       let endDate = item.end.dateTime ? moment(item.end.dateTime) : moment(item.end.date);
 
-      while (startDate.diff(endDate) <= 0) {
-        if (startDate.year() !== nextProps.year) break;
+      for (;startDate.diff(endDate) <= 0; startDate.add(1, 'd')) {
+        if (startDate.year() !== nextProps.year) continue;
 
         let mId = startDate.month();  // month 0-11
         let dId = startDate.date() -1;  // days 1-31
@@ -50,8 +50,6 @@ class Calendar extends Component {
             id: item.id
           });
         }
-
-        startDate.add(1, 'd');
       }
     });
 
