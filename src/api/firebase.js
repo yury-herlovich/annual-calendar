@@ -1,5 +1,6 @@
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
+import { initCalendarAPI } from './calendarAPI';
 
 export function initFirebase() {
   const config = {
@@ -18,15 +19,17 @@ export async function signIn() {
   let user = await checkIsUserSignIn();
 
   if (user) {
+    await initCalendarAPI();
     return Promise.resolve(user);
   }
 
   let provider = new firebase.auth.GoogleAuthProvider();
-  provider.addScope('https://www.googleapis.com/auth/calendar.readonly');
+  provider.addScope(process.env.REACT_APP_SCOPE);
 
   let authResult = await firebase.auth().signInWithPopup(provider);
 
   if (authResult) {
+    await initCalendarAPI();
     return Promise.resolve(authResult.user);
   } else {
     return Promise.reject();
