@@ -2,6 +2,8 @@ import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import { initCalendarAPI } from './calendarAPI';
 
+const STORAGE_TOKEN_DATA = 'googleCredentials';
+
 export function initFirebase() {
   const config = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -19,7 +21,7 @@ export async function signIn() {
   let user = await checkIsUserSignIn();
 
   if (user) {
-    await initCalendarAPI();
+    await initCalendarAPI(getCredential());
     return Promise.resolve(user);
   }
 
@@ -29,7 +31,9 @@ export async function signIn() {
   let authResult = await firebase.auth().signInWithPopup(provider);
 
   if (authResult) {
-    await initCalendarAPI();
+    saveCredential(authResult.credential);
+
+    await initCalendarAPI(authResult.credential);
     return Promise.resolve(authResult.user);
   } else {
     return Promise.reject();
@@ -42,4 +46,16 @@ function checkIsUserSignIn() {
       resolve(user);
     });
   });
+}
+
+function saveCredential(credentials) {
+  localStorage.setItem(STORAGE_TOKEN_DATA, JSON.stringify(credentials));
+}
+
+function getCredential() {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_TOKEN_DATA));
+  } catch (e) {
+    return false;
+  }
 }
