@@ -1,47 +1,5 @@
-// const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
-// const API_KEY = process.env.REACT_APP_API_KEY;
-// const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
+import { userIsSignIn } from './googleAuthAPI';
 const CALENDAR_ID = process.env.REACT_APP_CALENDAR_ID;
-
-// Authorization scopes required by the API; multiple scopes can be included, separated by spaces.
-// const SCOPE = process.env.REACT_APP_SCOPE;
-
-export function initCalendarAPI(credential) {
-  if (!credential) {
-    return Promise.reject();
-  }
-
-  const script = document.createElement("script");
-  script.src = "https://apis.google.com/js/api.js";
-  document.body.appendChild(script);
-
-  return new Promise((resolve, reject) => {
-    script.onload = () => {
-      resolve();
-    }
-  }).then(() => {
-    return new Promise((resolve, reject) => {
-      window['gapi'].load('client:auth2', () => {
-        resolve();
-      });
-    });
-  }).then(() => {
-    let token = {
-      access_token: credential.accessToken,
-      id_token: credential.idToken,
-    }
-
-    window['gapi'].client.setToken(token);
-
-    // return window['gapi'].auth2.init({
-    //   apiKey: API_KEY,
-    //   clientId: CLIENT_ID,
-    //   discoveryDocs: DISCOVERY_DOCS,
-    //   scope: SCOPE
-    // });
-  }).catch(err => console.log(err));
-}
-
 
 export function apiGetEvents(startDate, endDate) {
   let path = `https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events`;
@@ -58,6 +16,8 @@ export function apiGetEvents(startDate, endDate) {
 
 
 async function sendApiRequest(path, method, params) {
+  await userIsSignIn();
+
   let gapi = window['gapi'];
 
   return gapi.client.request({
