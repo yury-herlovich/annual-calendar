@@ -72,9 +72,12 @@ class Calendar extends Component {
   handleModalOpen = (e, events) => {
     if (events.length <= 0) return;
 
+    let eventsIds = events.map((item) => item.id);
+    let eventsWithFullInfo = this.props.events.filter((item) => eventsIds.indexOf(item.id) !== -1);
+
     this.setState({
       modalIsOpen: true,
-      modalEvents: events,
+      modalEvents: eventsWithFullInfo,
       modalClickPos: {x: e.screenX, y: e.screenY}
     });
   }
