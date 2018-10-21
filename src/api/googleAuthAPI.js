@@ -3,40 +3,42 @@ const API_KEY = process.env.REACT_APP_API_KEY;
 const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
 const SCOPE = process.env.REACT_APP_SCOPE;
 
-let clientIsInit = false;
+const apiSrc = 'https://apis.google.com/js/api.js';
+// const apiSrc = 'https://apis.google.com/js/platform.js';
 
-export function initGoogleClient() {
-  const script = document.createElement("script");
-  script.src = "https://apis.google.com/js/platform.js";
+export function loadGoogleClient() {
+  const script = document.createElement('script');
+  script.src = apiSrc;
   document.body.appendChild(script);
 
   return new Promise((resolve, reject) => {
     script.onload = () => {
-      let gapi = window['gapi'];
+      resolve();
+    }});
+}
 
-      gapi.load('client:auth2', () => {
-        gapi.client.init({
-          apiKey: API_KEY,
-          clientId: CLIENT_ID,
-          discoveryDocs: DISCOVERY_DOCS,
-          scope: SCOPE
-        }).then(() => {
-          let GoogleAuth = gapi.auth2.getAuthInstance();
+export function initGoogleClient() {
+  return new Promise((resolve, reject) => {
+    let gapi = window['gapi'];
 
-          GoogleAuth.isSignedIn.listen(updateSigninStatus);
-        }).then(() => {
-          clientIsInit = true;
-          resolve();
-        }).catch(() => {
-          reject()
-        });
+    gapi.load('client:auth2', () => {
+      gapi.client.init({
+        apiKey: API_KEY,
+        clientId: CLIENT_ID,
+        discoveryDocs: DISCOVERY_DOCS,
+        scope: SCOPE
+      }).then(() => {
+        resolve();
+      }).catch(() => {
+        reject()
       });
-    }
+    });
   });
 }
 
 export async function userIsSignIn() {
-  if (!clientIsInit) {
+  // if client is not initialized
+  if (window['gapi'].auth2 === undefined) {
     await initGoogleClient();
   }
 
@@ -45,10 +47,14 @@ export async function userIsSignIn() {
   // await GoogleAuth.signOut();
 
   let user = GoogleAuth.currentUser.get();
-  let isAuthorized = user.hasGrantedScopes(SCOPE);
+  let tokenExpiration = user.getAuthResponse().expires_at - Date.now();
 
-  // await user.reloadAuthResponse();
-  // console.log(user.getAuthResponse());
+  // refresh token
+  if (tokenExpiration < -3600000) {
+    await initGoogleClient();
+  }
+
+  let isAuthorized = user.hasGrantedScopes(SCOPE);
 
   if (isAuthorized) {
     return Promise.resolve();
@@ -57,8 +63,4 @@ export async function userIsSignIn() {
       .then(() => Promise.resolve())
       .catch(() => Promise.reject());
   }
-}
-
-function updateSigninStatus(isSignedIn) {
-  console.log('update sign status: is sign in - ', isSignedIn);
 }

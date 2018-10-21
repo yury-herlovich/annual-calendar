@@ -1,5 +1,15 @@
 import { apiGetEvents } from '../api/calendarAPI';
+import { loadGoogleClient } from '../api/googleAuthAPI';
 import * as actionTypes from '../constants/actionTypes';
+
+export function loadGoogleAPI() {
+  return (dispatch) => {
+    loadGoogleClient()
+      .then(() => {
+        dispatch({ type: actionTypes.GOOGLE_CLIENT_LOADED });
+      });
+  }
+}
 
 export function setYear(year) {
   return (dispatch) => {

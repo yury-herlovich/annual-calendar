@@ -3,11 +3,18 @@ import * as actionTypes from '../constants/actionTypes';
 const initialState = {
   year: null,
   events: [],
-  isLoading: false
+  isLoading: false,
+  googleClientLoaded: false
 }
 
 export default (state=initialState, action) => {
   switch (action.type) {
+
+    case actionTypes.GOOGLE_CLIENT_LOADED:
+      return {
+        ...state,
+        googleClientLoaded: true
+      }
 
     case actionTypes.SET_YEAR:
       return {
