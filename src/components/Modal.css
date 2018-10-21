@@ -1,0 +1,17 @@
+.modal-event {
+  margin: 30px 0;
+}
+
+.modal-event:first-child {
+  margin-top: 0;
+}
+
+.modal-event:last-child {
+  margin-bottom: 0;
+}
+
+.modal-event-date {
+  margin-top: 5px;
+  font-size: 0.75em;
+  color: #444;
+}

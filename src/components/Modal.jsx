@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactModal from 'react-modal';
+import moment from 'moment';
+import './Modal.css';
 
 ReactModal.setAppElement('#root');
 
@@ -14,8 +16,18 @@ const Modal = ({clickPos, modalIsOpen, handleClose, events}) => {
 
       { events.length > 0 &&
         events.map((item, i) => (
-          <section key={i}>
-            <header>{item.title}</header>
+          <section key={i} className="modal-event">
+            { console.log(item) }
+            <header className="modal-event-header">{item.summary}</header>
+            <div className="modal-event-info">
+              <div className="modal-event-date">
+                { (item.start.dateTime && moment(item.start.dateTime).format('dddd, MMMM DD, hh:mma')) ||
+                  (item.start.date && moment(item.start.date).format('dddd, MMMM DD')) }
+                &nbsp;-&nbsp;
+                { (item.end.dateTime && moment(item.end.dateTime).format('dddd, MMMM DD, hh:mma')) ||
+                  (item.end.date && moment(item.end.date).format('dddd, MMMM DD')) }
+              </div>
+            </div>
           </section>
         ))
       }
