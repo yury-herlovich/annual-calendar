@@ -1,0 +1,14 @@
+# ansible-playbook deploy/ansible-deploy.yml
+
+- hosts: localhost
+  gather_facts: no
+
+  tasks:
+
+  - name: Sync bucket
+    s3_sync:
+      bucket: "{{ S3_BUCKET }}"
+      file_root: ../build/
+      permission: public-read
+      delete: yes
+
