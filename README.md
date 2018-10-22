@@ -1,7 +1,7 @@
 # Calendar For The Year
 Build with [React.js](https://reactjs.org)
 
-### Installation
+## Installation
 * Git clone [this repo](https://github.com/yury-herlovich/calendar-for-the-year).
 * Move into the folder from your terminal:
 ```sh
@@ -17,7 +17,7 @@ Build with [React.js](https://reactjs.org)
 * Run `npm run start-js` to start application.
 
 
-### Deploy to s3 bucket with ansible
+## Deploy to s3 bucket with ansible
 * install ansible and boto for s3_sync module
 * Create file deploy/group_vars/all
 ```
