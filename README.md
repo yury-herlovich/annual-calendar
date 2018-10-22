@@ -16,6 +16,7 @@ Build with [React.js](https://reactjs.org)
 ```
 * Run `npm run start-js` to start application.
 
+
 ### Deploy to s3 bucket with ansible
 * install ansible and boto for s3_sync module
 * Create file deploy/group_vars/all
