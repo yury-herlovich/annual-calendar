@@ -1,7 +1,7 @@
 const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
 const API_KEY = process.env.REACT_APP_API_KEY;
-const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
-const SCOPE = process.env.REACT_APP_SCOPE;
+const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'];
+const SCOPE = 'https://www.googleapis.com/auth/calendar';
 
 const apiSrc = 'https://apis.google.com/js/api.js';
 // const apiSrc = 'https://apis.google.com/js/platform.js';
