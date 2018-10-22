@@ -17,15 +17,10 @@ const Modal = ({clickPos, modalIsOpen, handleClose, events}) => {
       { events.length > 0 &&
         events.map((item, i) => (
           <section key={i} className="modal-event">
-            { console.log(item) }
             <header className="modal-event-header">{item.summary}</header>
             <div className="modal-event-info">
               <div className="modal-event-date">
-                { (item.start.dateTime && moment(item.start.dateTime).format('dddd, MMMM DD, hh:mma')) ||
-                  (item.start.date && moment(item.start.date).format('dddd, MMMM DD')) }
-                &nbsp;-&nbsp;
-                { (item.end.dateTime && moment(item.end.dateTime).format('dddd, MMMM DD, hh:mma')) ||
-                  (item.end.date && moment(item.end.date).format('dddd, MMMM DD')) }
+                { dates(item.start.dateTime, item.start.date, item.end.dateTime, item.end.date) }
               </div>
             </div>
           </section>
@@ -65,5 +60,32 @@ let calculatePosition = (clickPos) => {
 
   return {top, bottom, left, right}
 }
+
+const dates = (startDateTime, startDate, endDateTime, endDate) => {
+  let start = startDateView(startDateTime, startDate);
+  let end = endDateView(endDateTime, endDate, startDate);
+
+  return end !== null ? `${start} - ${end}` : `${start}`;
+}
+
+const dateTemplate = 'dddd, MMMM DD';
+const dateTimeTemplate = 'dddd, MMMM DD, hh:mma';
+
+const startDateView = (dateTime, date) => (
+  (dateTime && moment(dateTime).format(dateTimeTemplate)) ||
+  (date && moment(date).format(dateTemplate))
+);
+
+const endDateView = (dateTime, endDate, startDate) => {
+  if (dateTime) {
+    return moment(dateTime).format(dateTimeTemplate);
+  }
+
+  if (moment(endDate).diff(startDate, 'd') === 1) {
+    return null;
+  }
+
+  return moment(endDate).subtract(1, 'd').format(dateTemplate)
+};
 
 export default Modal;

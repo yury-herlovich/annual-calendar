@@ -37,7 +37,7 @@ class Calendar extends Component {
 
     nextProps.events.forEach((item) => {
       let startDate = item.start.dateTime ? moment(item.start.dateTime) : moment(item.start.date);
-      let endDate = item.end.dateTime ? moment(item.end.dateTime) : moment(item.end.date);
+      let endDate = item.end.dateTime ? moment(item.end.dateTime) : moment(item.end.date).subtract(1, 'd');
 
       for (;startDate.diff(endDate) <= 0; startDate.add(1, 'd')) {
         if (startDate.year() !== nextProps.year) continue;
