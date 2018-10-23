@@ -13,6 +13,12 @@ export default (state = initialState, action) => {
         isSignIn: true
       }
 
+    case actionTypes.USER_SIGN_OUT:
+      return {
+        ...state,
+        isSignIn: false
+      }
+
     default:
       return state;
   }

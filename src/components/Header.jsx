@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import Auth from './Auth';
 import { setYear } from '../actions/calendarActions';
 
 import './Header.css';
@@ -22,9 +23,12 @@ class Header extends Component {
   render() {
     return (
       <header id="main-header">
-        <span className="link-choose-year" onClick={this.handlePrevYearClick}>&lt;</span>
-        <span className="year-view">{this.props.year}</span>
-        <span className="link-choose-year" onClick={this.handleNextYearClick}>&gt;</span>
+        <Auth />
+        <div id="select-year">
+          <span className="link-choose-year" onClick={this.handlePrevYearClick}>&lt;</span>
+          <span className="year-view">{this.props.year}</span>
+          <span className="link-choose-year" onClick={this.handleNextYearClick}>&gt;</span>
+        </div>
       </header>
     )
   }

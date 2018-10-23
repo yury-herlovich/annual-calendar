@@ -28,7 +28,7 @@ export function initGoogleClient() {
         discoveryDocs: DISCOVERY_DOCS,
         scope: SCOPE,
         ux_mode: 'redirect',
-        redirect_uri: `${process.env.REACT_APP_HOST}/signin`
+        redirect_uri: `${process.env.REACT_APP_HOST}`
       }).then(() => {
         // window['gapi'].auth2.getAuthInstance().signOut();
 
@@ -40,7 +40,7 @@ export function initGoogleClient() {
   });
 }
 
-export async function userIsSignIn() {
+export async function userIsSignIn(signIn = false) {
   // if client is not initialized
   if (window['gapi'].auth2 === undefined) {
     await initGoogleClient();
@@ -59,10 +59,16 @@ export async function userIsSignIn() {
   let isAuthorized = user.hasGrantedScopes(SCOPE);
 
   if (isAuthorized) {
-    return Promise.resolve();
-  } else {
+    return Promise.resolve(true);
+  } else if (signIn) {
     return GoogleAuth.signIn()
-      .then(() => Promise.resolve())
+      .then(() => Promise.resolve(true))
       .catch(() => Promise.reject());
+  } else {
+    return Promise.resolve(false);
   }
+}
+
+export function googleSignOut() {
+  return window['gapi'].auth2.getAuthInstance().signOut();
 }

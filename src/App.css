@@ -2,5 +2,5 @@
   display: grid;
   box-sizing: border-box;
   min-height: 100vh;
-  grid-template-rows: 35px 1fr;
+  grid-template-rows: 45px 1fr;
 }

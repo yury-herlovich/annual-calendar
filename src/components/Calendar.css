@@ -1,7 +1,7 @@
 #calendar {
   display: grid;
   box-sizing: border-box;
-  padding: 5px 10px 10px 10px;
+  padding: 0 10px 10px 10px;
   grid-template-rows: repeat(12, minmax(50px, 1fr) [month]);
 }
 
