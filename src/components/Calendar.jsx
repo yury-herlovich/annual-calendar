@@ -66,6 +66,16 @@ class Calendar extends Component {
       this.createCalendar(this.props.year);
     }
 
+    // user signed in
+    if (!prevProps.userIsSignIn && this.props.userIsSignIn) {
+      this.props.getEvents(this.props.year);
+    }
+
+    // user signed out
+    if (prevProps.userIsSignIn && !this.props.userIsSignIn) {
+      // this.createCalendar(this.props.year);
+    }
+
     // fill events
     if (prevProps.events !== this.props.events) {
       this.fillTheCalendarWithEvents(this.props.events);
