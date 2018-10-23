@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import { loadGoogleAPI } from './actions/calendarActions';
 import Calendar from './components/Calendar';
+import Header from './components/Header';
 import './App.css';
 
 class App extends Component {
@@ -15,6 +16,7 @@ class App extends Component {
 
     return (
       <div className="App">
+        <Header />
         <Calendar />
       </div>
     );

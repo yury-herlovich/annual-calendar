@@ -7,7 +7,6 @@ import LoadingAnim from './LoadingAnim';
 import { generateCalendar } from '../utils/utils';
 import { setYear, getEvents } from '../actions/calendarActions';
 
-import Header from './Header';
 import Month from './Month';
 import Modal from './Modal';
 
@@ -16,6 +15,7 @@ class Calendar extends Component {
     super();
 
     this.state = {
+      year: null,
       modalIsOpen: false,
       modalEvents: [],
       modalClickPos: {},
@@ -60,13 +60,29 @@ class Calendar extends Component {
     };
   }
 
-  createCalendar = (year) => {
-    this.props.setYear(year);
+  componentDidUpdate(prevProps){
+    // update year
+    if (prevProps.year !== this.props.year) {
+      this.createCalendar(this.props.year);
+    }
 
+    // fill events
+    if (prevProps.events !== this.props.events) {
+      this.fillTheCalendarWithEvents(this.props.events);
+    }
+  }
+
+  createCalendar = (year) => {
     let calendar = generateCalendar(year);
     this.setState({calendar, events: []});
 
-    this.props.getEvents(year);
+    if (this.props.userIsSignIn) {
+      this.props.getEvents(year);
+    }
+  }
+
+  fillTheCalendarWithEvents = (events) => {
+    console.log('fill the calendar');
   }
 
   handleModalOpen = (e, events) => {
@@ -90,27 +106,10 @@ class Calendar extends Component {
     });
   }
 
-  handlePrevYearClick = () => {
-    let year = this.props.year - 1;
-    this.createCalendar(year);
-  }
-
-  handleNextYearClick = (e) => {
-    let year = this.props.year + 1;
-    this.createCalendar(year);
-  }
-
   render() {
     return (
       <main id="calendar">
         <LoadingAnim isLoading={this.props.isLoading} />
-
-        <Header
-          year={this.props.year}
-          handlePrevYearClick={this.handlePrevYearClick}
-          handleNextYearClick={this.handleNextYearClick}
-          />
-
         { this.state.calendar.length === 0 ?
 
           null :
@@ -134,7 +133,8 @@ class Calendar extends Component {
 const mapStateToProps = state => ({
   events: state.calendar.events,
   year: state.calendar.year,
-  isLoading: state.calendar.isLoading
+  isLoading: state.calendar.isLoading,
+  userIsSignIn: state.auth.isSignIn
 });
 
 const mapDispatchToProps = {

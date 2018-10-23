@@ -1,8 +1,17 @@
 #main-header {
+  padding: 0 10px;
   text-align: right;
+  align-self: center;
+}
+
+.year-view {
+  display: inline-block;
+  width: 60px;
+  text-align: center;
 }
 
 .link-choose-year {
-  margin: 0 15px;
+  padding: 0 5px;
+  font-size: 1.1em;
   cursor: pointer;
 }

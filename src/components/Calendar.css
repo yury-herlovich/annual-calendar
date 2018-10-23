@@ -1,9 +1,8 @@
 #calendar {
   display: grid;
   box-sizing: border-box;
-  min-height: 100vh;
-  padding: 10px;
-  grid-template-rows: 35px repeat(12, minmax(50px, 1fr) [month]);
+  padding: 5px 10px 10px 10px;
+  grid-template-rows: repeat(12, minmax(50px, 1fr) [month]);
 }
 
 .month {

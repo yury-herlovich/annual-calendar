@@ -26,8 +26,12 @@ export function initGoogleClient() {
         apiKey: API_KEY,
         clientId: CLIENT_ID,
         discoveryDocs: DISCOVERY_DOCS,
-        scope: SCOPE
+        scope: SCOPE,
+        ux_mode: 'redirect',
+        redirect_uri: `${process.env.REACT_APP_HOST}/signin`
       }).then(() => {
+        // window['gapi'].auth2.getAuthInstance().signOut();
+
         resolve();
       }).catch(() => {
         reject()
@@ -43,8 +47,6 @@ export async function userIsSignIn() {
   }
 
   let GoogleAuth = window['gapi'].auth2.getAuthInstance();
-
-  // await GoogleAuth.signOut();
 
   let user = GoogleAuth.currentUser.get();
   let tokenExpiration = user.getAuthResponse().expires_at - Date.now();
