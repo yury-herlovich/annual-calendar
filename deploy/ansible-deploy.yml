@@ -5,10 +5,16 @@
 
   tasks:
 
+  - name: Biuld project
+    shell: yarn run build
+    args:
+      chdir: ../
+
   - name: Sync bucket
     s3_sync:
       bucket: "{{ S3_BUCKET }}"
       file_root: ../build/
       permission: public-read
+      file_change_strategy: checksum
       delete: yes
 
