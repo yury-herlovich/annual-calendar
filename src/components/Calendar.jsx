@@ -18,8 +18,7 @@ class Calendar extends Component {
       modalIsOpen: false,
       modalEvents: [],
       modalClickPos: {},
-      calendar: [],
-      events: []
+      calendar: []
     }
   }
 
@@ -46,8 +45,10 @@ class Calendar extends Component {
   }
 
   createCalendar = (year) => {
-    let calendar = generateCalendar(year);
-    this.setState({calendar, events: []});
+    setTimeout(() => {
+      let calendar = generateCalendar(year);
+      this.setState({calendar});
+    }, 0);
 
     if (this.props.userIsSignIn) {
       this.props.getEvents(year);
