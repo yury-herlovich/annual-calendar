@@ -1,9 +1,11 @@
 import React from 'react';
 import icon from '../img/loading.svg';
-import './LoadingAnim.css';
 
 const LoadingAnim = ({isLoading}) => (
-  isLoading && <img src={icon} id="loading-animation" alt="" />
+  <div id="loading-animation">
+    {isLoading && <img src={icon} alt="" />}
+  </div>
+
 )
 
 export default LoadingAnim;

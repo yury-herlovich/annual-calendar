@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import Auth from './Auth';
+import LoadingAnim from './LoadingAnim';
+
 import { setYear } from '../actions/calendarActions';
 
 import './Header.css';
@@ -24,6 +26,7 @@ class Header extends Component {
     return (
       <header id="main-header">
         <Auth />
+        <LoadingAnim isLoading={this.props.isLoading} />
         <div id="select-year">
           <span className="link-choose-year" onClick={this.handlePrevYearClick}>&lt;</span>
           <span className="year-view">{this.props.year}</span>
@@ -35,7 +38,8 @@ class Header extends Component {
 }
 
 const mapStateToProps = state => ({
-  year: state.calendar.year
+  year: state.calendar.year,
+  isLoading: state.calendar.isLoading
 });
 
 const mapDispatchToProps = {

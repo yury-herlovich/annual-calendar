@@ -1,6 +1,6 @@
 #main-header {
   display: grid;
-  grid-template-columns: 95px 1fr;
+  grid-template-columns: 95px 1fr 110px;
   padding: 0 10px;
   align-self: center;
 }
@@ -28,17 +28,26 @@
 }
 
 #select-year {
-  text-align: right;
+  display: grid;
+  grid-template-columns: 25px auto 25px;
+  align-items: center;
+  text-align: center;
 }
 
 .year-view {
   display: inline-block;
   width: 60px;
-  text-align: center;
 }
 
 .link-choose-year {
-  padding: 0 5px;
+  margin-bottom: 2px;
   font-size: 1.1em;
   cursor: pointer;
+}
+
+#loading-animation {
+  display: grid;
+  justify-items: right;
+  align-items: center;
+  margin-right: 20px;
 }

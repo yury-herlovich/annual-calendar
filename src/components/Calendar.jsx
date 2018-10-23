@@ -107,7 +107,6 @@ class Calendar extends Component {
   render() {
     return (
       <main id="calendar">
-        <LoadingAnim isLoading={this.props.isLoading} />
         { this.state.calendar.length === 0 ?
 
           null :
@@ -131,7 +130,6 @@ class Calendar extends Component {
 const mapStateToProps = state => ({
   events: state.calendar.events,
   year: state.calendar.year,
-  isLoading: state.calendar.isLoading,
   userIsSignIn: state.auth.isSignIn
 });
 
