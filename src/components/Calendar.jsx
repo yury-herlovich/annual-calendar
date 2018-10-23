@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import './Calendar.css';
-import LoadingAnim from './LoadingAnim';
 
 import { generateCalendar } from '../utils/utils';
 import { setYear, getEvents } from '../actions/calendarActions';
@@ -37,7 +36,7 @@ class Calendar extends Component {
 
     // user signed out
     if (prevProps.userIsSignIn && !this.props.userIsSignIn) {
-      // this.createCalendar(this.props.year);
+      this.cleanCalendar();
     }
 
     // fill events
@@ -78,6 +77,18 @@ class Calendar extends Component {
           });
         }
       }
+    });
+
+    this.setState({calendar});
+  }
+
+  cleanCalendar = () => {
+    let calendar = this.state.calendar.map((month) => {
+      month.days.forEach((day) => {
+        day.events = [];
+      });
+
+      return month;
     });
 
     this.setState({calendar});
