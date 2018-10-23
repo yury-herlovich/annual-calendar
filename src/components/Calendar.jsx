@@ -24,42 +24,6 @@ class Calendar extends Component {
     }
   }
 
-  componentDidMount(){
-    const date = new Date();
-    this.createCalendar(date.getFullYear());
-  }
-
-  static getDerivedStateFromProps = (nextProps, prevState) => {
-    if (nextProps.events.length === 0 && prevState.events.length === 0) return {};
-    if (nextProps.events === prevState.events) return {};
-
-    let calendar = JSON.parse(JSON.stringify(prevState.calendar));
-
-    nextProps.events.forEach((item) => {
-      let startDate = item.start.dateTime ? moment(item.start.dateTime) : moment(item.start.date);
-      let endDate = item.end.dateTime ? moment(item.end.dateTime) : moment(item.end.date).subtract(1, 'd');
-
-      for (;startDate.diff(endDate) <= 0; startDate.add(1, 'd')) {
-        if (startDate.year() !== nextProps.year) continue;
-
-        let mId = startDate.month();  // month 0-11
-        let dId = startDate.date() -1;  // days 1-31
-
-        if (calendar[mId] && calendar[mId].days[dId]) {
-          calendar[mId].days[dId].events.push({
-            title: item.summary,
-            id: item.id
-          });
-        }
-      }
-    });
-
-    return {
-      events: nextProps.events,
-      calendar
-    };
-  }
-
   componentDidUpdate(prevProps){
     // update year
     if (prevProps.year !== this.props.year) {
@@ -92,7 +56,31 @@ class Calendar extends Component {
   }
 
   fillTheCalendarWithEvents = (events) => {
-    console.log('fill the calendar');
+    if (this.state.calendar.length === 0) return;
+    if (events.length === 0) return;
+
+    let calendar = JSON.parse(JSON.stringify(this.state.calendar));
+
+    events.forEach((item) => {
+      let startDate = item.start.dateTime ? moment(item.start.dateTime) : moment(item.start.date);
+      let endDate = item.end.dateTime ? moment(item.end.dateTime) : moment(item.end.date).subtract(1, 'd');
+
+      for (;startDate.diff(endDate) <= 0; startDate.add(1, 'd')) {
+        if (startDate.year() !== this.props.year) continue;
+
+        let mId = startDate.month();  // month 0-11
+        let dId = startDate.date() -1;  // days 1-31
+
+        if (calendar[mId] && calendar[mId].days[dId]) {
+          calendar[mId].days[dId].events.push({
+            title: item.summary,
+            id: item.id
+          });
+        }
+      }
+    });
+
+    this.setState({calendar});
   }
 
   handleModalOpen = (e, events) => {
