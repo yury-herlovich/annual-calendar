@@ -27,7 +27,7 @@ export function getEvents(year) {
 
     apiGetEvents(startDate, endDate)
       .then(res => {
-        dispatch({ type: actionTypes.ADD_EVENTS, events: res.result.items });
+        dispatch({ type: actionTypes.SET_EVENTS, events: res.result.items });
         dispatch({ type: actionTypes.SET_LOADING, isLoading: false });
       }).catch(err => {
         console.log(err);

@@ -28,10 +28,10 @@ export default (state=initialState, action) => {
         events: []
       };
 
-    case actionTypes.ADD_EVENTS:
+    case actionTypes.SET_EVENTS:
       return {
         ...state,
-        events: state.events.concat(action.events)
+        events: action.events
       };
 
     case actionTypes.SET_LOADING:
