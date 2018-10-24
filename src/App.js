@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Switch, Route } from 'react-router-dom';
 
 import { loadGoogleAPI } from './actions/calendarActions';
 import Calendar from './components/Calendar';
@@ -16,8 +17,17 @@ class App extends Component {
 
     return (
       <div className="App">
-        <Header />
-        <Calendar />
+        {/* Header */}
+        <Switch>
+          <Route exact path="/" component={Header} />
+          <Route path="/year/:year" component={Header} />
+        </Switch>
+
+        {/* Content */}
+        <Switch>
+          <Route exact path="/" component={Calendar} />
+          <Route path="/year/:year" component={Calendar} />
+        </Switch>
       </div>
     );
   }
