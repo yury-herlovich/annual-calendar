@@ -1,7 +1,7 @@
 import * as actionTypes from '../constants/actionTypes';
 
 const initialState = {
-  isSignIn: false
+  isSignIn: undefined
 };
 
 export default (state = initialState, action) => {

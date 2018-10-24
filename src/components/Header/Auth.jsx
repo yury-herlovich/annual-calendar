@@ -26,6 +26,8 @@ class Auth extends Component {
   }
 
   render() {
+    if (this.props.userIsSignIn === undefined) return <div id="auth-link"></div>;
+
     return (
       <div id="auth-link" onClick={this.handleSignIn} >
         <img width="17" height="17" src={logo} id="auth-logo" alt="" />
