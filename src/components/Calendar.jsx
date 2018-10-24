@@ -14,7 +14,6 @@ class Calendar extends Component {
     super();
 
     this.state = {
-      year: null,
       modalIsOpen: false,
       modalEvents: [],
       modalClickPos: {},
@@ -48,11 +47,11 @@ class Calendar extends Component {
     setTimeout(() => {
       let calendar = generateCalendar(year);
       this.setState({calendar});
-    }, 0);
 
-    if (this.props.userIsSignIn) {
-      this.props.getEvents(year);
-    }
+      if (this.props.userIsSignIn) {
+        this.props.getEvents(year);
+      }
+    }, 0);
   }
 
   fillTheCalendarWithEvents = (events) => {

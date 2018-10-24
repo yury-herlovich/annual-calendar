@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { userIsSignIn } from '../api/googleAuthAPI';
+import { userIsSignIn } from '../../api/googleAuthAPI';
 
-import { setSignIn, setSignOut, signIn, signOut } from '../actions/authActions';
+import { setSignIn, setSignOut, signIn, signOut } from '../../actions/authActions';
 
-import logo from '../img/google_logo.svg';
+import logo from '../../img/google_logo.svg';
 
 class Auth extends Component {
   componentDidMount = () => {

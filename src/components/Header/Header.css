@@ -42,7 +42,7 @@
 .link-choose-year {
   margin-bottom: 2px;
   font-size: 1.1em;
-  cursor: pointer;
+  text-decoration: none;
 }
 
 #loading-animation {

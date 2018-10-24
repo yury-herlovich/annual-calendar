@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, withRouter } from 'react-router-dom';
 
 import { loadGoogleAPI } from './actions/calendarActions';
 import Calendar from './components/Calendar';
-import Header from './components/Header';
+import Header from './components/Header/Header';
 import './App.css';
 
 class App extends Component {
@@ -19,8 +19,8 @@ class App extends Component {
       <div className="App">
         {/* Header */}
         <Switch>
-          <Route exact path="/" component={Header} />
-          <Route path="/year/:year" component={Header} />
+          <Route path='/year/:year' component={Header}/>
+          <Route component={Header}/>
         </Switch>
 
         {/* Content */}
@@ -41,4 +41,4 @@ const mapDispatchToProps = {
   loadGoogleAPI
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
