@@ -1,5 +1,4 @@
 import React from 'react';
-import moment from 'moment';
 import './Day.css';
 
 import Event from './Event';
