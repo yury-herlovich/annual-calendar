@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import _ from 'lodash';
 import './Calendar.css';
 
-import { generateCalendar } from '../utils/utils';
 import { setYear, getEvents } from '../actions/calendarActions';
 
 import Month from './Month';
@@ -36,6 +36,12 @@ class Calendar extends Component {
   componentDidUpdate = (prevProps, prevState) => {
     if (prevProps.year !== this.props.year && this.props.year !== null) {
       this.rebuildCalendar();
+      this.addEventsToTheCalendar();
+      this.props.getEvents(this.props.year);
+    }
+
+    if (prevProps.events !== this.props.events) {
+      this.addEventsToTheCalendar();
     }
   }
 
@@ -92,6 +98,39 @@ class Calendar extends Component {
 
       calendar[month].days[day - 1].isToday = true;
     }
+
+    this.setState({calendar});
+  }
+
+  addEventsToTheCalendar = () => {
+    if (this.state.calendar.length === 0) return;
+    if (_.isEmpty(this.props.events)) return;
+
+    let calendar = this.state.calendar;
+    let events = this.props.events;
+
+    Object.keys(events).forEach((eventId) => {
+      let event = events[eventId];
+
+      let startDate = event.start.dateTime ? moment(event.start.dateTime) : moment(event.start.date);
+      let endDate = event.end.dateTime ? moment(event.end.dateTime) : moment(event.end.date).subtract(1, 'd');
+
+      for (;startDate.diff(endDate) <= 0; startDate.add(1, 'd')) {
+        if (startDate.year() !== this.props.year) continue;
+
+        let mId = startDate.month();  // month 0-11
+        let dId = startDate.date() -1;  // days 1-31
+
+        if (calendar[mId] === undefined || calendar[mId].days[dId] === undefined) continue;
+
+        _.remove(calendar[mId].days[dId].events, (item) => item.id === eventId);
+
+        calendar[mId].days[dId].events.push({
+          title: event.summary,
+          id: eventId
+        });
+      }
+    })
 
     this.setState({calendar});
   }

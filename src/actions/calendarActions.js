@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { apiGetEvents } from '../api/calendarAPI';
 import { loadGoogleClient } from '../api/googleAuthAPI';
 import * as actionTypes from '../constants/actionTypes';
@@ -14,7 +15,6 @@ export function loadGoogleAPI() {
 export function setYear(year) {
   return (dispatch) => {
     dispatch({ type: actionTypes.SET_YEAR, year });
-    dispatch({ type: actionTypes.CLEAR_EVENTS });
   }
 }
 
@@ -27,7 +27,13 @@ export function getEvents(year) {
 
     apiGetEvents(startDate, endDate)
       .then(res => {
-        dispatch({ type: actionTypes.SET_EVENTS, events: res.result.items });
+        let events = {};
+
+        for (let event of res.result.items) {
+          events[event.id] = _.pick(event, ['htmlLink', 'description', 'end', 'start', 'summary']);
+        }
+
+        dispatch({ type: actionTypes.SET_EVENTS, events });
         dispatch({ type: actionTypes.SET_LOADING, isLoading: false });
       }).catch(err => {
         console.log(err);

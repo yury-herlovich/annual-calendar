@@ -25,7 +25,7 @@ const Day = ({data, handleModalOpen}) => {
       onClick={(e) => handleModalOpen(e, data.events)}>
       <header className="day-header">{data.title}</header>
 
-      { data.events.map((item) => (
+      { data.events.map((item, i) => (
         <Event key={item.id} event={item} />
       ))}
     </div>

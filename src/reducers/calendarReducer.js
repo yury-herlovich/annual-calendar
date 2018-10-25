@@ -2,7 +2,7 @@ import * as actionTypes from '../constants/actionTypes';
 
 const initialState = {
   year: null,
-  events: [],
+  events: {},
   isLoading: false,
   googleClientLoaded: false
 }
@@ -29,9 +29,15 @@ export default (state=initialState, action) => {
       };
 
     case actionTypes.SET_EVENTS:
+      let events = {...state.events};
+
+      Object.keys(action.events).forEach((eventId) => {
+        events[eventId] = action.events[eventId];
+      })
+
       return {
         ...state,
-        events: action.events
+        events
       };
 
     case actionTypes.SET_LOADING:
