@@ -2,12 +2,13 @@
   display: grid;
   box-sizing: border-box;
   padding: 0 10px 10px 10px;
-  grid-template-rows: repeat(12, minmax(50px, 1fr) [month]);
+  grid-template-rows: repeat(12, minmax(50px, 1fr));
+  grid-gap: 1px;
 }
 
 .month {
   display: grid;
-  grid-template-columns: 1.2fr repeat(31, minmax(38px, 1fr) [day]);
+  grid-template-columns: 1.2fr repeat(31, minmax(38px, 1fr));
   justify-items: stretch;
   border-bottom: 1px solid #cccccc;
 }

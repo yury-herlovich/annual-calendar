@@ -3,12 +3,12 @@ import moment from 'moment';
 
 import Day from './Day';
 
-const Month = ({days, date, handleModalOpen}) => (
+const Month = ({ data, handleModalOpen}) => (
   <section className="month">
-    <header className="month-header">{moment(date).format('MMM')}</header>
+    <header className="month-header">{data.title}</header>
 
-    { days.map((item) => (
-      <Day key={item.id} dayData={item} handleModalOpen={handleModalOpen} />
+    { data.days.map((item) => (
+      <Day key={item.id} data={item} handleModalOpen={handleModalOpen} />
     ))}
   </section>
 );

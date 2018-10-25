@@ -9,6 +9,9 @@ import { setYear, getEvents } from '../actions/calendarActions';
 import Month from './Month';
 import Modal from './Modal';
 
+const monthTitleFormat = 'MMM';
+const dayTitleFormat = 'ddd/DD';
+
 class Calendar extends Component {
   constructor() {
     super();
@@ -17,82 +20,82 @@ class Calendar extends Component {
       modalIsOpen: false,
       modalEvents: [],
       modalClickPos: {},
-      calendar: []
+      calendar: [],
+      year: null
     }
   }
 
-  componentDidUpdate(prevProps){
-    // update year
-    if (prevProps.year !== this.props.year) {
-      this.createCalendar(this.props.year);
-    }
 
-    // user signed in
-    if (!prevProps.userIsSignIn && this.props.userIsSignIn) {
-      this.props.getEvents(this.props.year);
-    }
-
-    // user signed out
-    if (prevProps.userIsSignIn && !this.props.userIsSignIn) {
-      this.cleanCalendar();
-    }
-
-    // fill events
-    if (prevProps.events !== this.props.events) {
-      this.fillTheCalendarWithEvents(this.props.events);
-    }
-  }
-
-  createCalendar = (year) => {
-    setTimeout(() => {
-      let calendar = generateCalendar(year);
-      this.setState({calendar});
-
-      if (this.props.userIsSignIn) {
-        this.props.getEvents(year);
-      }
-    }, 0);
-  }
-
-  fillTheCalendarWithEvents = (events) => {
-    if (this.state.calendar.length === 0) return;
-    if (events.length === 0) return;
-
-    let calendar = JSON.parse(JSON.stringify(this.state.calendar));
-
-    events.forEach((item) => {
-      let startDate = item.start.dateTime ? moment(item.start.dateTime) : moment(item.start.date);
-      let endDate = item.end.dateTime ? moment(item.end.dateTime) : moment(item.end.date).subtract(1, 'd');
-
-      for (;startDate.diff(endDate) <= 0; startDate.add(1, 'd')) {
-        if (startDate.year() !== this.props.year) continue;
-
-        let mId = startDate.month();  // month 0-11
-        let dId = startDate.date() -1;  // days 1-31
-
-        if (calendar[mId] && calendar[mId].days[dId]) {
-          calendar[mId].days[dId].events.push({
-            title: item.summary,
-            id: item.id
-          });
-        }
-      }
-    });
+  componentDidMount = () => {
+    let calendar = this.generateCalendar();
 
     this.setState({calendar});
   }
 
-  cleanCalendar = () => {
-    let calendar = this.state.calendar.map((month) => {
-      month.days.forEach((day) => {
-        day.events = [];
+
+  componentDidUpdate = (prevProps, prevState) => {
+    if (prevProps.year !== this.props.year && this.props.year !== null) {
+      this.rebuildCalendar();
+    }
+  }
+
+
+  generateCalendar = () => {
+    let calendar = [];
+
+    for (let m = 0; m < 12; m++) {
+      let days = [];
+      for (let d = 0; d < 31; d++) {
+        days.push({
+          id: `${m}-${d}`,
+          title: null,
+          isToday: false,
+          events: []
+        });
+      }
+
+      calendar.push({
+        id: m,
+        title: moment().month(m).format(monthTitleFormat),
+        days
+      })
+    }
+
+    return calendar;
+  }
+
+
+  rebuildCalendar = () => {
+    let date = moment(`${this.props.year}-01-01 00:00:00`);
+
+    // add dates to the calendar
+    let calendar = this.state.calendar.map((month, mInd) => {
+      month.days.forEach((day, dInd) => {
+        if (mInd === date.month()) {
+          day.title = date.format(dayTitleFormat);
+          day.isToday = false;
+          day.events = [];
+
+          date.add(1, 'd');
+        } else {
+          day.title = null;
+        }
       });
 
       return month;
     });
 
+    // set today
+    if (moment().year() === this.props.year) {
+      let month = moment().month();
+      let day = moment().date();
+
+      calendar[month].days[day - 1].isToday = true;
+    }
+
     this.setState({calendar});
   }
+
 
   handleModalOpen = (e, events) => {
     if (events.length <= 0) return;
@@ -123,7 +126,7 @@ class Calendar extends Component {
           null :
 
           this.state.calendar.map((item) => (
-            <Month key={item.id} days={item.days} date={item.date} handleModalOpen={this.handleModalOpen} />
+            <Month key={item.id} data={item} handleModalOpen={this.handleModalOpen} />
           ))
         }
 
