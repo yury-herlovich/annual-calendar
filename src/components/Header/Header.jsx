@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Switch, Route, withRouter } from 'react-router-dom';
 
 import Auth from './Auth';
 import LoadingAnim from './LoadingAnim';
@@ -13,7 +14,11 @@ class Header extends Component {
       <header id="main-header">
         <Auth />
         <LoadingAnim isLoading={this.props.isLoading} />
-        <SelectYear match={this.props.match} />
+
+        <Switch>
+          <Route path='/year/:year' component={SelectYear}/>
+          <Route component={SelectYear}/>
+        </Switch>
       </header>
     )
   }
@@ -25,4 +30,4 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

@@ -17,11 +17,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        {/* Header */}
-        <Switch>
-          <Route path='/year/:year' component={Header}/>
-          <Route component={Header}/>
-        </Switch>
+        <Header />
 
         {/* Content */}
         <Switch>
