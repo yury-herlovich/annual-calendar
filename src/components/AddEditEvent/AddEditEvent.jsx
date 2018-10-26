@@ -22,12 +22,15 @@ class AddEditEvent extends Component {
       startTime: '',
       endDate: '',
       endTime: '',
-      allDay: false
+      allDay: false,
+      isLoading: true
     }
   }
 
   componentDidMount = () => {
     if (this.props.match.params.id === undefined) {
+      this.setState({isLoading: false});
+
       return;
     }
 
@@ -42,6 +45,18 @@ class AddEditEvent extends Component {
     }
   }
 
+  componentDidUpdate = (prevProps) => {
+    let id = this.state.id;
+
+    if (id === undefined) {
+      return;
+    }
+
+    if (prevProps.events[id] === undefined && this.props.events[id]) {
+      this.setEventValues(this.props.events[id]);
+    }
+  }
+
   setEventValues = (event) => {
     let startDate = moment(event.start.date || event.start.dateTime);
     let endDate = moment(event.end.date || event.end.dateTime);
@@ -53,7 +68,8 @@ class AddEditEvent extends Component {
       startTime: startDate.format('HH:mm'),
       endDate: endDate.format('YYYY-MM-DD'),
       endTime: endDate.format('HH:mm'),
-      allDay: event.start.date !== undefined
+      allDay: event.start.date !== undefined,
+      isLoading: false
     });
   }
 
@@ -68,6 +84,8 @@ class AddEditEvent extends Component {
   }
 
   render() {
+    if (this.state.isLoading) return null;
+
     return (
       <main>
         <Form handleSubmit={this.handleSubmit} className="form add-edit-form">
