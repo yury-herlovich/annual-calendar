@@ -9,13 +9,14 @@ import Checkbox from '../Form/Checkbox';
 import Button from '../Form/Button';
 
 import './AddEditEvent.css';
-import { getEvents } from '../../actions/calendarActions';
+import { getEvent } from '../../actions/calendarActions';
 
 class AddEditEvent extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      id: undefined,
       title: '',
       startDate: '',
       startTime: '',
@@ -30,12 +31,14 @@ class AddEditEvent extends Component {
       return;
     }
 
-    let event = this.props.events[this.props.match.params.id];
+    let id = this.props.match.params.id;
+    let event = this.props.events[id];
 
     if (event !== undefined) {
       this.setEventValues(event);
     } else {
-      // getEvent
+      this.setState({id});
+      this.props.getEvent(id);
     }
   }
 
@@ -44,6 +47,7 @@ class AddEditEvent extends Component {
     let endDate = moment(event.end.date || event.end.dateTime);
 
     this.setState({
+      id: event.id,
       title: event.summary,
       startDate: startDate.format('YYYY-MM-DD'),
       startTime: startDate.format('HH:mm'),
@@ -130,4 +134,8 @@ const mapStateToProps = state => ({
   events: state.calendar.events
 })
 
-export default connect(mapStateToProps, {})(AddEditEvent);
+const mapDispatchToProps = {
+  getEvent
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddEditEvent);

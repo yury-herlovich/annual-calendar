@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { apiGetEvents } from '../api/calendarAPI';
+import { apiGetEvents, apiGetEvent } from '../api/calendarAPI';
 import { loadGoogleClient } from '../api/googleAuthAPI';
 import * as actionTypes from '../constants/actionTypes';
 
@@ -39,5 +39,24 @@ export function getEvents(year) {
         console.log(err);
         dispatch({ type: actionTypes.SET_LOADING, isLoading: false });
       });
+  }
+}
+
+export function getEvent(id) {
+  return (dispatch) => {
+    dispatch({ type: actionTypes.SET_LOADING, isLoading: true });
+
+    apiGetEvent(id)
+      .then((res) => {
+        let events = {
+          id: res.result
+        }
+
+        dispatch({ type: actionTypes.SET_EVENTS, events });
+        dispatch({ type: actionTypes.SET_LOADING, isLoading: false });
+      }).catch(err => {
+        console.log(err);
+        dispatch({ type: actionTypes.SET_LOADING, isLoading: false });
+      })
   }
 }

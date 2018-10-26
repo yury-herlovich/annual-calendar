@@ -15,6 +15,14 @@ export function apiGetEvents(startDate, endDate) {
 }
 
 
+export function apiGetEvent(id) {
+  let path = `https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events/${id}`;
+  let method = 'GET';
+
+  return sendApiRequest(path, method, {});
+}
+
+
 async function sendApiRequest(path, method, params) {
   await userIsSignIn();
 
