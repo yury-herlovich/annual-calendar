@@ -27,26 +27,33 @@ class Calendar extends Component {
 
 
   componentDidMount = () => {
-    if (this.props.year === null) {
-      let calendar = this.generateEmptyCalendar();
-      this.setState({calendar});
-    } else {
-      this.buildCalendar();
-      this.addEventsToTheCalendar();
+    let calendar = this.generateEmptyCalendar();
+
+    if (this.props.year !== null) {
+      calendar = this.buildCalendar(calendar);
+      calendar = this.addEventsToTheCalendar(calendar);
+
       this.props.getEvents(this.props.year);
     }
+
+    this.setState({calendar});
   }
 
 
   componentDidUpdate = (prevProps, prevState) => {
     if (prevProps.year !== this.props.year && this.props.year !== null) {
-      this.buildCalendar();
-      this.addEventsToTheCalendar();
+      let calendar = this.buildCalendar(this.state.calendar);
+      calendar = this.addEventsToTheCalendar(calendar);
+
+      this.setState({calendar});
+
       this.props.getEvents(this.props.year);
     }
 
     if (!_.isEqual(prevProps.events, this.props.events)) {
-      this.addEventsToTheCalendar();
+      let calendar = this.addEventsToTheCalendar(this.state.calendar);
+
+      this.setState({calendar});
     }
   }
 
@@ -76,12 +83,11 @@ class Calendar extends Component {
   }
 
 
-  buildCalendar = () => {
-    let prevCalendar = this.state.calendar.length > 0 ? this.state.calendar : this.generateEmptyCalendar();
+  buildCalendar = (calendar) => {
     let date = moment(`${this.props.year}-01-01 00:00:00`);
 
     // add dates to the calendar
-    let calendar = prevCalendar.map((month, mInd) => {
+    calendar = calendar.map((month, mInd) => {
       month.days.forEach((day, dInd) => {
         if (mInd === date.month()) {
           day.title = date.format(dayTitleFormat);
@@ -105,14 +111,13 @@ class Calendar extends Component {
       calendar[month].days[day - 1].isToday = true;
     }
 
-    this.setState({calendar});
+    return calendar;
   }
 
-  addEventsToTheCalendar = () => {
-    if (this.state.calendar.length === 0) return;
-    if (_.isEmpty(this.props.events)) return;
+  addEventsToTheCalendar = (calendar) => {
+    if (calendar === 0) return calendar;
+    if (_.isEmpty(this.props.events)) return calendar;
 
-    let calendar = this.state.calendar;
     let events = this.props.events;
 
     Object.keys(events).forEach((eventId) => {
@@ -138,7 +143,7 @@ class Calendar extends Component {
       }
     })
 
-    this.setState({calendar});
+    return calendar;
   }
 
 
