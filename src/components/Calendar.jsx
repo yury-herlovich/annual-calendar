@@ -45,7 +45,7 @@ class Calendar extends Component {
       this.props.getEvents(this.props.year);
     }
 
-    if (prevProps.events !== this.props.events) {
+    if (!_.isEqual(prevProps.events, this.props.events)) {
       this.addEventsToTheCalendar();
     }
   }
