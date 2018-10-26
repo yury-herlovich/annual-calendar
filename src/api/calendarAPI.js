@@ -31,6 +31,14 @@ export function apiPatchEvent(id, data) {
 }
 
 
+export function apiAddEvent(data) {
+  let path = `https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events`;
+  let method = 'POST';
+
+  return sendApiRequest(path, method, {}, data);
+}
+
+
 async function sendApiRequest(path, method, params, body) {
   await userIsSignIn();
 

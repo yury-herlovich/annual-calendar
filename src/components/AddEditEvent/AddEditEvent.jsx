@@ -92,9 +92,9 @@ class AddEditEvent extends Component {
 
     if (this.state.id !== undefined) {
       this.props.updateEvent(this.state.id, eventData);
+    } else {
+      this.props.addEvent(eventData);
     }
-
-    console.log('Submit');
   }
 
   render() {
