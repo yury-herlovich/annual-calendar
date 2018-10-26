@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 
 import { setYear } from '../../actions/calendarActions';
 
+import './SelectYear.css'
+
 class SelectYear extends Component {
   componentDidMount = () => {
     this.setYear();

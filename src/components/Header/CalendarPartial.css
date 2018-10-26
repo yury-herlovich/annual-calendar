@@ -1,0 +1,15 @@
+#calendar-partial {
+  display: grid;
+  justify-self: right;
+  grid-template-columns: 30px 50px 100px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#calendar-partial .bp3-icon {
+  display: grid;
+  align-self: center;
+  align-items: center;
+  justify-self: center;
+  justify-items: center;
+}

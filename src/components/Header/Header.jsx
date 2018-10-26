@@ -1,33 +1,20 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Switch, Route, withRouter } from 'react-router-dom';
+import React from 'react';
+import { Switch, Route } from 'react-router-dom';
 
 import Auth from './Auth';
-import LoadingAnim from './LoadingAnim';
-import SelectYear from './SelectYear';
+import CalendarPartial from './CalendarPartial';
 
 import './Header.css';
 
-class Header extends Component {
-  render() {
-    return (
-      <header id="main-header">
-        <Auth />
-        <LoadingAnim isLoading={this.props.isLoading} />
+const Header = () => (
+  <header id="main-header">
+    <Auth />
 
-        <Switch>
-          <Route path='/year/:year' component={SelectYear}/>
-          <Route component={SelectYear}/>
-        </Switch>
-      </header>
-    )
-  }
-}
+    <Switch>
+      <Route exact path='/' component={CalendarPartial}/>
+      <Route path='/year/:year' component={CalendarPartial}/>
+    </Switch>
+  </header>
+);
 
-const mapStateToProps = state => ({
-  isLoading: state.calendar.isLoading
-});
-
-const mapDispatchToProps = {};
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));
+export default Header;

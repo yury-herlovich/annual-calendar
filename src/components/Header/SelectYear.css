@@ -1,0 +1,19 @@
+
+#select-year {
+  display: grid;
+  grid-template-columns: 25px 1fr 25px;
+  align-items: center;
+  justify-items: center;
+}
+
+.year-view {
+  display: inline-block;
+}
+
+.link-choose-year {
+  display: inline-block;
+  margin-bottom: 2px;
+  font-size: 1.1em;
+  text-decoration: none;
+  color: #000;
+}

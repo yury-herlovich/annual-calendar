@@ -1,7 +1,9 @@
 #main-header {
   display: grid;
-  grid-template-columns: 95px 1fr 110px;
+  grid-template-columns: 95px 1fr;
   padding: 0 10px;
+  justify-content: space-between;
+  align-items: center;
   align-self: center;
 }
 
@@ -27,28 +29,7 @@
   text-align: center;
 }
 
-#select-year {
-  display: grid;
-  grid-template-columns: 25px auto 25px;
-  align-items: center;
-  text-align: center;
-}
-
-.year-view {
-  display: inline-block;
-  width: 60px;
-}
-
-.link-choose-year {
-  margin-bottom: 2px;
-  font-size: 1.1em;
-  text-decoration: none;
-  color: #000;
-}
-
 #loading-animation {
   display: grid;
-  justify-items: right;
   align-items: center;
-  margin-right: 20px;
 }
