@@ -6,6 +6,8 @@ import Input from '../Form/Input';
 import Checkbox from '../Form/Checkbox';
 import Button from '../Form/Button';
 
+import './AddEditForm.css';
+
 const AddEditForm = ({eventData, year, handleSubmit, handleInputChange}) => (
   <Form handleSubmit={handleSubmit} className="form add-edit-form">
     <div className='form-group'>

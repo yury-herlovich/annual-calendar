@@ -4,7 +4,6 @@ import moment from 'moment';
 
 import AddEditForm from './AddEditForm';
 
-import './AddEditEvent.css';
 import { getEvent } from '../../actions/calendarActions';
 
 class AddEditEvent extends Component {
