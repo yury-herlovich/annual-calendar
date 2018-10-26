@@ -30,7 +30,7 @@ export function getEvents(year) {
         let events = {};
 
         for (let event of res.result.items) {
-          events[event.id] = _.pick(event, ['htmlLink', 'description', 'end', 'start', 'summary']);
+          events[event.id] = _.pick(event, ['id', 'htmlLink', 'description', 'end', 'start', 'summary']);
         }
 
         dispatch({ type: actionTypes.SET_EVENTS, events });

@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactModal from 'react-modal';
 import moment from 'moment';
+import { Icon } from '@blueprintjs/core';
+import { Link } from 'react-router-dom';
 import './Modal.css';
 
 ReactModal.setAppElement('#root');
@@ -17,7 +19,12 @@ const Modal = ({clickPos, modalIsOpen, handleClose, events}) => {
       { events.length > 0 &&
         events.map((item, i) => (
           <section key={i} className="modal-event">
-            <header className="modal-event-header">{item.summary}</header>
+            <header className="modal-event-header">
+              <span>{item.summary}</span>
+              <Link to={'/edit/' + item.id}>
+                <Icon icon="edit" color="#333333" />
+              </Link>
+            </header>
             <div className="modal-event-info">
               <div className="modal-event-date">
                 { dates(item.start.dateTime, item.start.date, item.end.dateTime, item.end.date) }

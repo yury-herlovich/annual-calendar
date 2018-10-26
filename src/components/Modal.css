@@ -10,6 +10,12 @@
   margin-bottom: 0;
 }
 
+.modal-event-header {
+  display: grid;
+  grid-template-columns: 1fr 16px;
+  justify-content: space-between;
+}
+
 .modal-event-date {
   margin-top: 5px;
   font-size: 0.75em;
