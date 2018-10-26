@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { apiGetEvents, apiGetEvent } from '../api/calendarAPI';
+import { apiGetEvents, apiGetEvent, apiPatchEvent } from '../api/calendarAPI';
 import { loadGoogleClient } from '../api/googleAuthAPI';
 import * as actionTypes from '../constants/actionTypes';
 
@@ -59,4 +59,29 @@ export function getEvent(id) {
         dispatch({ type: actionTypes.SET_LOADING, isLoading: false });
       })
   }
+}
+
+
+export function updateEvent(id, eventData) {
+  return (dispatch) => {
+    dispatch({ type: actionTypes.SET_LOADING, isLoading: true });
+
+    apiPatchEvent(id, eventData)
+      .then(res => {
+        let events = {
+          [id]: res.result
+        }
+
+        dispatch({ type: actionTypes.SET_EVENTS, events });
+        dispatch({ type: actionTypes.SET_LOADING, isLoading: false });
+      }).catch(err => {
+        console.log(err);
+        dispatch({ type: actionTypes.SET_LOADING, isLoading: false });
+      });
+  }
+}
+
+
+export function addEvent(eventData) {
+  console.log(eventData);
 }

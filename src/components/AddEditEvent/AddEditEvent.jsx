@@ -4,7 +4,7 @@ import moment from 'moment';
 
 import AddEditForm from './AddEditForm';
 
-import { getEvent } from '../../actions/calendarActions';
+import { getEvent, updateEvent, addEvent } from '../../actions/calendarActions';
 
 class AddEditEvent extends Component {
   constructor(props) {
@@ -75,6 +75,25 @@ class AddEditEvent extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
+
+    let eventData = {
+      summary: this.state.title,
+      start: {},
+      end: {}
+    };
+
+    if (this.state.allDay) {
+      eventData.start.date = this.state.startDate;
+      eventData.end.date = this.state.endDate;
+    } else {
+      eventData.start.dateTime = moment(`${this.state.startDate} ${this.state.startTime}`).toISOString();
+      eventData.end.dateTime = moment(`${this.state.endDate} ${this.state.endTime}`).toISOString();
+    }
+
+    if (this.state.id !== undefined) {
+      this.props.updateEvent(this.state.id, eventData);
+    }
+
     console.log('Submit');
   }
 
@@ -99,7 +118,9 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  getEvent
+  getEvent,
+  updateEvent,
+  addEvent
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddEditEvent);

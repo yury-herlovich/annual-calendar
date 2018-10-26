@@ -23,7 +23,15 @@ export function apiGetEvent(id) {
 }
 
 
-async function sendApiRequest(path, method, params) {
+export function apiPatchEvent(id, data) {
+  let path = `https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events/${id}`;
+  let method = 'PATCH';
+
+  return sendApiRequest(path, method, {}, data);
+}
+
+
+async function sendApiRequest(path, method, params, body) {
   await userIsSignIn();
 
   let gapi = window['gapi'];
@@ -31,6 +39,7 @@ async function sendApiRequest(path, method, params) {
   return gapi.client.request({
     path,
     method,
-    params
+    params,
+    body
   });
 }
