@@ -1,0 +1,41 @@
+.form-group {
+  margin: 7px 0;
+}
+
+.form label,
+input,
+.form button {
+  font-size: 0.9em;
+}
+
+input,
+.form button {
+  box-sizing: border-box;
+  padding: 7px;
+  margin: 5px;
+  border: 1px solid #dddddd;
+  border-radius: 3px;
+}
+
+input[type=text] {
+  width: calc(100% - 10px);
+}
+
+input[type=date],
+input[type=time] {
+  position: relative;
+  bottom: 1px;
+  font-size: 1em;
+}
+
+.form-buttons {
+  text-align: right;
+}
+
+.form button {
+  background-color: #ffffff;
+}
+
+.form button:active {
+  background-color: #f5f5f5;
+}

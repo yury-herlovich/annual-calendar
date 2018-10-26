@@ -3,8 +3,11 @@ import { connect } from 'react-redux';
 import { Switch, Route, withRouter } from 'react-router-dom';
 
 import { loadGoogleAPI } from './actions/calendarActions';
-import Calendar from './components/Calendar';
 import Header from './components/Header/Header';
+import Calendar from './components/Calendar';
+import AddEditEvent from './components/AddEditEvent/AddEditEvent';
+
+
 import './App.css';
 
 class App extends Component {
@@ -23,6 +26,8 @@ class App extends Component {
         <Switch>
           <Route exact path="/" component={Calendar} />
           <Route path="/year/:year" component={Calendar} />
+          <Route path="/add" component={AddEditEvent} />
+          <Route path="/edit/:id" component={AddEditEvent} />
         </Switch>
       </div>
     );

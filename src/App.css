@@ -4,3 +4,7 @@
   min-height: 100vh;
   grid-template-rows: 45px 1fr;
 }
+
+main {
+  padding: 0 10px 10px 10px;
+}
