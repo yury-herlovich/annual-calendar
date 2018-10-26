@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import Form from '../Form/Form';
 import Input from '../Form/Input';
@@ -36,7 +38,8 @@ class AddEditEvent extends Component {
 
   handleCancel = (e) => {
     e.preventDefault();
-    console.log('Cancel');
+
+
   }
 
   render() {
@@ -91,7 +94,9 @@ class AddEditEvent extends Component {
 
           <div className="form-buttons form-group">
             <Button name='submit' text='Save' handleClick={this.handleSubmit} />
-            <Button name='cancel' text='Cancel' handleClick={this.handleCancel} />
+            <Link to={'/year/' + this.props.year}>
+              <Button name='cancel' text='Cancel' />
+            </Link>
           </div>
         </Form>
       </main>
@@ -99,4 +104,8 @@ class AddEditEvent extends Component {
   }
 }
 
-export default AddEditEvent;
+const mapStateToProps = state => ({
+  year: state.calendar.year || new Date().getFullYear()
+})
+
+export default connect(mapStateToProps, {})(AddEditEvent);
