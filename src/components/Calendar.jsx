@@ -27,15 +27,20 @@ class Calendar extends Component {
 
 
   componentDidMount = () => {
-    let calendar = this.generateCalendar();
-
-    this.setState({calendar});
+    if (this.props.year === null) {
+      let calendar = this.generateEmptyCalendar();
+      this.setState({calendar});
+    } else {
+      this.buildCalendar();
+      this.addEventsToTheCalendar();
+      this.props.getEvents(this.props.year);
+    }
   }
 
 
   componentDidUpdate = (prevProps, prevState) => {
     if (prevProps.year !== this.props.year && this.props.year !== null) {
-      this.rebuildCalendar();
+      this.buildCalendar();
       this.addEventsToTheCalendar();
       this.props.getEvents(this.props.year);
     }
@@ -46,7 +51,7 @@ class Calendar extends Component {
   }
 
 
-  generateCalendar = () => {
+  generateEmptyCalendar = () => {
     let calendar = [];
 
     for (let m = 0; m < 12; m++) {
@@ -71,11 +76,12 @@ class Calendar extends Component {
   }
 
 
-  rebuildCalendar = () => {
+  buildCalendar = () => {
+    let prevCalendar = this.state.calendar.length > 0 ? this.state.calendar : this.generateEmptyCalendar();
     let date = moment(`${this.props.year}-01-01 00:00:00`);
 
     // add dates to the calendar
-    let calendar = this.state.calendar.map((month, mInd) => {
+    let calendar = prevCalendar.map((month, mInd) => {
       month.days.forEach((day, dInd) => {
         if (mInd === date.month()) {
           day.title = date.format(dayTitleFormat);
