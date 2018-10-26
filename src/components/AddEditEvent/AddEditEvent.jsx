@@ -24,22 +24,13 @@ class AddEditEvent extends Component {
   }
 
   handleInputChange = (e) => {
-    let target = e.target;
-
-    let value = target.type !== 'checkbox' ? target.value : target.checked;
-
-    this.setState({[target.name]: value});
+    let value = e.target.type !== 'checkbox' ? e.target.value : e.target.checked;
+    this.setState({[e.target.name]: value});
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
     console.log('Submit');
-  }
-
-  handleCancel = (e) => {
-    e.preventDefault();
-
-
   }
 
   render() {
