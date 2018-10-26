@@ -49,7 +49,7 @@ export function getEvent(id) {
     apiGetEvent(id)
       .then((res) => {
         let events = {
-          id: res.result
+          [id]: res.result
         }
 
         dispatch({ type: actionTypes.SET_EVENTS, events });
