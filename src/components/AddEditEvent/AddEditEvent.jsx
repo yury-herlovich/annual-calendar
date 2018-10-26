@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import moment from 'moment';
 
 import Form from '../Form/Form';
 import Input from '../Form/Input';
@@ -8,6 +9,7 @@ import Checkbox from '../Form/Checkbox';
 import Button from '../Form/Button';
 
 import './AddEditEvent.css';
+import { getEvents } from '../../actions/calendarActions';
 
 class AddEditEvent extends Component {
   constructor(props) {
@@ -21,6 +23,34 @@ class AddEditEvent extends Component {
       endTime: '',
       allDay: false
     }
+  }
+
+  componentDidMount = () => {
+    if (this.props.match.params.id === undefined) {
+      return;
+    }
+
+    let event = this.props.events[this.props.match.params.id];
+
+    if (event !== undefined) {
+      this.setEventValues(event);
+    } else {
+      // getEvent
+    }
+  }
+
+  setEventValues = (event) => {
+    let startDate = moment(event.start.date || event.start.dateTime);
+    let endDate = moment(event.end.date || event.end.dateTime);
+
+    this.setState({
+      title: event.summary,
+      startDate: startDate.format('YYYY-MM-DD'),
+      startTime: startDate.format('HH:mm'),
+      endDate: endDate.format('YYYY-MM-DD'),
+      endTime: endDate.format('HH:mm'),
+      allDay: event.start.date !== undefined
+    });
   }
 
   handleInputChange = (e) => {
@@ -96,7 +126,8 @@ class AddEditEvent extends Component {
 }
 
 const mapStateToProps = state => ({
-  year: state.calendar.year || new Date().getFullYear()
+  year: state.calendar.year || new Date().getFullYear(),
+  events: state.calendar.events
 })
 
 export default connect(mapStateToProps, {})(AddEditEvent);
