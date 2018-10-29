@@ -20,7 +20,7 @@ export function setYear(year) {
 
 export function getEvents(year) {
   const startDate = new Date(Date.UTC(year, 0, 1, 0, 0, 0));
-  const endDate = new Date(Date.UTC(year, 11, 31, 0, 0, 0));
+  const endDate = new Date(Date.UTC(year, 11, 31, 23, 59, 59));
 
   return (dispatch) => {
     dispatch({ type: actionTypes.SET_LOADING, isLoading: true });
