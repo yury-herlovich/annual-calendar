@@ -27,12 +27,21 @@ class AddEditEvent extends Component {
   }
 
   componentDidMount = () => {
+    // add new event
     if (this.props.match.params.id === undefined) {
-      this.setState({isLoading: false});
+      let now = moment();
+      this.setState({
+        startDate: now.format('YYYY-MM-DD'),
+        startTime: now.format('HH:mm'),
+        endDate: now.format('YYYY-MM-DD'),
+        endTime: now.add(1, 'h').format('HH:mm'),
+        isLoading: false
+      });
 
       return;
     }
 
+    // wdit event
     let id = this.props.match.params.id;
     let event = this.props.events[id];
 
