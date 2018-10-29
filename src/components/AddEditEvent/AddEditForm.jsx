@@ -8,7 +8,7 @@ import Button from '../Form/Button';
 
 import './AddEditForm.css';
 
-const AddEditForm = ({eventData, year, handleSubmit, handleInputChange}) => (
+const AddEditForm = ({eventData, year, handleSubmit, handleDelete, handleInputChange}) => (
   <Form handleSubmit={handleSubmit} className="form add-edit-form">
     <div className='form-group'>
       <Input
@@ -61,6 +61,8 @@ const AddEditForm = ({eventData, year, handleSubmit, handleInputChange}) => (
       <Link to={'/year/' + year}>
         <Button name='cancel' text='Cancel' />
       </Link>
+      { eventData.id &&
+        <Button className="btn-warning" name='delete' text='Delete' handleClick={handleDelete} /> }
     </div>
   </Form>
 );

@@ -39,6 +39,14 @@ export function apiAddEvent(data) {
 }
 
 
+export function apiDeleteEvent(id) {
+  let path = `https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events/${id}`;
+  let method = 'DELETE';
+
+  return sendApiRequest(path, method);
+}
+
+
 async function sendApiRequest(path, method, params, body) {
   await userIsSignIn();
 

@@ -8,6 +8,8 @@ const initialState = {
 }
 
 export default (state=initialState, action) => {
+  let events = {...state.events};
+
   switch (action.type) {
 
     case actionTypes.GOOGLE_CLIENT_LOADED:
@@ -29,8 +31,6 @@ export default (state=initialState, action) => {
       };
 
     case actionTypes.SET_EVENTS:
-      let events = {...state.events};
-
       Object.keys(action.events).forEach((eventId) => {
         events[eventId] = action.events[eventId];
       })
@@ -39,6 +39,14 @@ export default (state=initialState, action) => {
         ...state,
         events
       };
+
+    case actionTypes.DELETE_EVENT:
+      delete events[action.id]
+
+      return {
+        ...state,
+        events
+      }
 
     case actionTypes.SET_LOADING:
       return {

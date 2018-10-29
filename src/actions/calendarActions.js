@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { apiGetEvents, apiGetEvent, apiPatchEvent, apiAddEvent } from '../api/calendarAPI';
+import { apiGetEvents, apiGetEvent, apiPatchEvent, apiAddEvent, apiDeleteEvent } from '../api/calendarAPI';
 import { loadGoogleClient } from '../api/googleAuthAPI';
 import * as actionTypes from '../constants/actionTypes';
 
@@ -93,6 +93,22 @@ export function addEvent(eventData) {
         }
 
         dispatch({ type: actionTypes.SET_EVENTS, events });
+        dispatch({ type: actionTypes.SET_LOADING, isLoading: false });
+      }).catch(err => {
+        console.log(err);
+        dispatch({ type: actionTypes.SET_LOADING, isLoading: false });
+      });
+  }
+}
+
+
+export function deleteEvent(id) {
+  return (dispatch) => {
+    dispatch({ type: actionTypes.SET_LOADING, isLoading: true });
+
+    apiDeleteEvent(id)
+      .then(() => {
+        dispatch({ type: actionTypes.DELETE_EVENT, id });
         dispatch({ type: actionTypes.SET_LOADING, isLoading: false });
       }).catch(err => {
         console.log(err);

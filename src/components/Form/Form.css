@@ -39,3 +39,12 @@ input[type=time] {
 .form button:active {
   background-color: #f5f5f5;
 }
+
+.form .btn-warning {
+  background-color: #ff5868;
+  color: #fff;
+}
+
+.form .btn-warning:active {
+  background-color: #ed5160;
+}

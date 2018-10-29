@@ -6,7 +6,7 @@ import _ from 'lodash';
 
 import AddEditForm from './AddEditForm';
 
-import { getEvent, updateEvent, addEvent } from '../../actions/calendarActions';
+import { getEvent, updateEvent, addEvent, deleteEvent } from '../../actions/calendarActions';
 
 class AddEditEvent extends Component {
   constructor(props) {
@@ -104,6 +104,16 @@ class AddEditEvent extends Component {
     this.setState({isSaving: true});
   }
 
+  handleDeleteEvent = (e) => {
+    e.preventDefault();
+
+    let c = window.confirm(`Delete the event '${this.state.title}'`);
+    if (c) {
+      this.props.deleteEvent(this.state.id);
+      this.setState({isSaving: true});
+    }
+  }
+
   render() {
     if (this.state.isLoading) return null;
     if (this.state.redirect) {
@@ -116,6 +126,7 @@ class AddEditEvent extends Component {
           eventData={this.state}
           year={this.props.year}
           handleSubmit={this.handleSubmit}
+          handleDelete={this.handleDeleteEvent}
           handleInputChange={this.handleInputChange} />
       </main>
     )
@@ -130,7 +141,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   getEvent,
   updateEvent,
-  addEvent
+  addEvent,
+  deleteEvent
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddEditEvent);
