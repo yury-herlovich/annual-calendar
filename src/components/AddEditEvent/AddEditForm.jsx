@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import Form from '../Form/Form';
 import Input from '../Form/Input';
+import Textarea from '../Form/Textarea';
 import Checkbox from '../Form/Checkbox';
 import Button from '../Form/Button';
 
@@ -54,6 +55,15 @@ const AddEditForm = ({eventData, year, handleSubmit, handleDelete, handleInputCh
     <div className="form-group">
       <Checkbox name="allDay" value={eventData.allDay} handleChange={handleInputChange} />
       <label htmlFor="allDay">All day</label>
+    </div>
+
+    <div className="form-group">
+      <Textarea
+        name="desc"
+        value={eventData.desc}
+        handleChange={handleInputChange}
+        placeholder="Description"
+        height="150px" />
     </div>
 
     <div className="form-buttons form-group">

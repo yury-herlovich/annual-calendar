@@ -20,6 +20,7 @@ class AddEditEvent extends Component {
       endDate: '',
       endTime: '',
       allDay: false,
+      desc: '',
       isLoading: true,
       isSaving: false,
       redirect: false
@@ -83,6 +84,7 @@ class AddEditEvent extends Component {
       endDate: endDate.format('YYYY-MM-DD'),
       endTime: endDate.format('HH:mm'),
       allDay: event.start.date !== undefined,
+      desc: event.description,
       isLoading: false
     });
   }
@@ -97,6 +99,7 @@ class AddEditEvent extends Component {
 
     let eventData = {
       summary: this.state.title,
+      description: this.state.desc,
       start: {},
       end: {}
     };
