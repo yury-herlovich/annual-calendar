@@ -14,6 +14,7 @@
   display: grid;
   grid-template-columns: 1fr 16px;
   justify-content: space-between;
+  grid-column-gap: 20px;
   text-decoration: none;
   color: #000;
 }
