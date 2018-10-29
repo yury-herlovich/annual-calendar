@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import moment from 'moment';
+import _ from 'lodash';
 
 import AddEditForm from './AddEditForm';
 
@@ -18,7 +20,9 @@ class AddEditEvent extends Component {
       endDate: '',
       endTime: '',
       allDay: false,
-      isLoading: true
+      isLoading: true,
+      isSaving: false,
+      redirect: false
     }
   }
 
@@ -43,11 +47,12 @@ class AddEditEvent extends Component {
   componentDidUpdate = (prevProps) => {
     let id = this.state.id;
 
-    if (id === undefined) {
-      return;
+    // redirect after saving
+    if (this.state.isSaving && !_.isEqual(prevProps.events, this.props.events)) {
+      this.setState({redirect: true});
     }
 
-    if (prevProps.events[id] === undefined && this.props.events[id]) {
+    if (id && prevProps.events[id] === undefined && this.props.events[id]) {
       this.setEventValues(this.props.events[id]);
     }
   }
@@ -95,10 +100,15 @@ class AddEditEvent extends Component {
     } else {
       this.props.addEvent(eventData);
     }
+
+    this.setState({isSaving: true});
   }
 
   render() {
     if (this.state.isLoading) return null;
+    if (this.state.redirect) {
+      return <Redirect push to={`/year/${this.props.year}`} />
+    }
 
     return (
       <main>
