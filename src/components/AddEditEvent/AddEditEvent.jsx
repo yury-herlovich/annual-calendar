@@ -61,6 +61,11 @@ class AddEditEvent extends Component {
     let startDate = moment(event.start.date || event.start.dateTime);
     let endDate = moment(event.end.date || event.end.dateTime);
 
+    // if all day - end date - 1d
+    if (event.end.date !== undefined) {
+      endDate.subtract(1, 'd');
+    }
+
     this.setState({
       id: event.id,
       title: event.summary,
@@ -89,7 +94,9 @@ class AddEditEvent extends Component {
 
     if (this.state.allDay) {
       eventData.start.date = this.state.startDate;
-      eventData.end.date = this.state.endDate;
+      eventData.start.timeZone = 'Etc/GMT';
+      eventData.end.date = moment(`${this.state.endDate} 00:00:00`).add(1, 'd').format('YYYY-MM-DD'); // +1 day
+      eventData.end.timeZone = 'Etc/GMT';
     } else {
       eventData.start.dateTime = moment(`${this.state.startDate} ${this.state.startTime}`).toISOString();
       eventData.end.dateTime = moment(`${this.state.endDate} ${this.state.endTime}`).toISOString();
