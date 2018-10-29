@@ -20,8 +20,8 @@ const Modal = ({clickPos, modalIsOpen, handleClose, events}) => {
         events.map((item, i) => (
           <section key={i} className="modal-event">
             <header className="modal-event-header">
-              <span>{item.summary}</span>
-              <Link to={'/edit/' + item.id}>
+              <Link to={'/edit/' + item.id} className="modal-edit-link">
+                <span>{item.summary}</span>
                 <Icon icon="edit" color="#333333" />
               </Link>
             </header>

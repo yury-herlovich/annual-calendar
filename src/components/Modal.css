@@ -10,10 +10,12 @@
   margin-bottom: 0;
 }
 
-.modal-event-header {
+.modal-edit-link {
   display: grid;
   grid-template-columns: 1fr 16px;
   justify-content: space-between;
+  text-decoration: none;
+  color: #000;
 }
 
 .modal-event-date {
