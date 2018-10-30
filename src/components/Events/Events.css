@@ -1,0 +1,6 @@
+#events {
+  grid-row: 1;
+  grid-column: 1;
+  display: grid;
+  grid-template-rows: repeat(12, minmax(50px, 1fr));
+}

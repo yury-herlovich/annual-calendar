@@ -1,22 +1,6 @@
 #calendar {
+  grid-row: 2;
   display: grid;
-  box-sizing: border-box;
-  grid-template-rows: repeat(12, minmax(50px, 1fr));
-  grid-gap: 1px;
-}
-
-.month {
-  display: grid;
-  grid-template-columns: 1.2fr repeat(31, minmax(38px, 1fr));
-  justify-items: stretch;
-  border-bottom: 1px solid #cccccc;
-}
-
-.month:first-child {
-  border-top: 1px solid #cccccc;
-}
-
-.month-header {
-  justify-self: center;
-  align-self: center;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr;
 }

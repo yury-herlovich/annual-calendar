@@ -1,8 +1,6 @@
 import React from 'react';
 import './Day.css';
 
-import Event from './Event';
-
 const Day = ({data, handleModalOpen}) => {
   if (data.title === null) {
     return <div className="day-empty"></div>
@@ -23,10 +21,6 @@ const Day = ({data, handleModalOpen}) => {
       className={dayClass.join(' ')}
       onClick={(e) => handleModalOpen(e, data.events)}>
       <header className="day-header">{data.title}</header>
-
-      { data.events.map((item, i) => (
-        <Event key={item.id || i} event={item} />
-      ))}
     </div>
   )
 };

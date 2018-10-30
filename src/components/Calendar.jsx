@@ -1,262 +1,27 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import moment from 'moment';
-import _ from 'lodash';
 import './Calendar.css';
 
-import { setYear, getEvents } from '../actions/calendarActions';
-
-import Month from './Month';
-import Modal from './Modal';
-
-const monthTitleFormat = 'MMM';
-const dayTitleFormat = 'ddd/DD';
+import CalendarGrid from './Calendar/CalendarGrid';
+import Events from './Events/Events';
 
 class Calendar extends Component {
-  constructor() {
-    super();
-
-    this.state = {
-      modalIsOpen: false,
-      modalEvents: [],
-      modalClickPos: {},
-      calendar: [],
-      year: null
-    }
-  }
-
-
-  componentDidMount = () => {
-    let calendar = this.generateEmptyCalendar();
-
-    if (this.props.year !== null) {
-      calendar = this.buildCalendar(calendar);
-      calendar = this.addEventsToTheCalendar(calendar);
-
-      this.props.getEvents(this.props.year);
-    }
-
-    this.setState({calendar});
-  }
-
-
-  componentDidUpdate = (prevProps, prevState) => {
-    if (prevProps.year !== this.props.year && this.props.year !== null) {
-      let calendar = this.buildCalendar(this.state.calendar);
-      calendar = this.addEventsToTheCalendar(calendar);
-
-      this.setState({calendar});
-
-      this.props.getEvents(this.props.year);
-    }
-
-    if (!_.isEqual(prevProps.events, this.props.events)) {
-      let calendar = this.addEventsToTheCalendar(this.state.calendar);
-
-      this.setState({calendar});
-    }
-  }
-
-
-  generateEmptyCalendar = () => {
-    let calendar = [];
-
-    for (let m = 0; m < 12; m++) {
-      let days = [];
-      for (let d = 0; d < 31; d++) {
-        days.push({
-          id: `${m}-${d}`,
-          title: null,
-          isToday: false,
-          events: []
-        });
-      }
-
-      calendar.push({
-        id: m,
-        title: moment().month(m).format(monthTitleFormat),
-        days
-      })
-    }
-
-    return calendar;
-  }
-
-
-  buildCalendar = (calendar) => {
-    let date = moment(`${this.props.year}-01-01 00:00:00`);
-
-    // add dates to the calendar
-    calendar = calendar.map((month, mInd) => {
-      month.days.forEach((day, dInd) => {
-        if (mInd === date.month()) {
-          day.title = date.format(dayTitleFormat);
-          day.isToday = false;
-          day.events = [];
-
-          date.add(1, 'd');
-        } else {
-          day.title = null;
-        }
-      });
-
-      return month;
-    });
-
-    // set today
-    if (moment().year() === this.props.year) {
-      let month = moment().month();
-      let day = moment().date();
-
-      calendar[month].days[day - 1].isToday = true;
-    }
-
-    return calendar;
-  }
-
-  addEventsToTheCalendar = (calendar) => {
-    if (calendar === 0) return calendar;
-    if (_.isEmpty(this.props.events)) return calendar;
-
-    let events = this.props.events;
-
-    Object.keys(events).forEach((eventId) => {
-      let event = events[eventId];
-
-      let startDate = event.start.dateTime ? moment(event.start.dateTime) : moment(event.start.date);
-      let endDate = event.end.dateTime ? moment(event.end.dateTime) : moment(event.end.date).subtract(1, 'd');
-      let day = startDate.clone();
-
-      while (day.diff(endDate) <= 0) {
-        if (day.year() !== this.props.year) break;
-
-        let mId = day.month();  // month 0-11
-        let dId = day.date() -1;  // days 1-31
-
-        if (calendar[mId] === undefined || calendar[mId].days[dId] === undefined) break;
-
-        let endMonth = day.clone().endOf('month');
-        let eventLength = 1;
-
-        if (endDate.diff(endMonth, 'd') < 0) {
-          eventLength = endDate.diff(startDate, 'd') + 1;
-        } else {
-          eventLength = endMonth.diff(day, 'd') + 1;
-        }
-
-        // remove old event
-        for (let i = 0; i < eventLength; i++) {
-          _.remove(calendar[mId].days[dId + i].events, (item) => item.id === eventId);
-        }
-
-        let eventPosition = 0;
-
-        // insert event in each day
-        for (let i = 0; i < eventLength; i++) {
-          if (i === 0) {
-            eventPosition = this.calculateEventPosition(calendar, mId, dId);
-          }
-
-          if (calendar[mId].days[dId + i].events.length < eventPosition) {
-            let count = eventPosition - calendar[mId].days[dId + i].events.length;
-            calendar[mId].days[dId + i].events = calendar[mId].days[dId + i].events.concat(this.fillDayEvents(count));
-          }
-
-          calendar[mId].days[dId + i].events[eventPosition] = {
-            title: event.summary,
-            id: eventId,
-            eventLength,
-            dayNum: i
-          };
-        }
-
-        day.add(eventLength, 'd');
-      }
-    })
-
-    return calendar;
-  }
-
-
-  calculateEventPosition = (calendar, month, day) => {
-    let position = calendar[month].days[day].events.length;
-
-    for (let i = 0; i < calendar[month].days[day].events.length; i++) {
-      if (_.isEmpty(calendar[month].days[day].events[i])) {
-        position = i;
-      }
-
-      break;
-    }
-
-    return position;
-  }
-
-  fillDayEvents = (count) => {
-    let events = [];
-
-    for(let i = 0; i < count; i++) {
-      events.push({});
-    }
-
-    return events;
-  }
-
-
-  handleModalOpen = (e, eventsIds) => {
-    if (eventsIds.length <= 0) return;
-
-    let events = eventsIds
-      .map(item => this.props.events[item.id])
-      .filter(item => !_.isEmpty(item));
-
-    this.setState({
-      modalIsOpen: true,
-      modalEvents: events,
-      modalClickPos: {x: e.screenX, y: e.screenY}
-    });
-  }
-
-  handleModalClose = () => {
-    this.setState({
-      modalIsOpen: false,
-      modalEvents: [],
-      modalClickPos: {}
-    });
-  }
-
   render() {
+    if (this.props.year === null) return null;
+
     return (
       <main id="calendar">
-        { this.state.calendar.length === 0 ?
-
-          null :
-
-          this.state.calendar.map((item) => (
-            <Month key={item.id} data={item} handleModalOpen={this.handleModalOpen} />
-          ))
-        }
-
-        <Modal
-          modalIsOpen={this.state.modalIsOpen}
-          handleClose={this.handleModalClose}
-          events={this.state.modalEvents}
-          clickPos={this.state.modalClickPos} />
-
+        <CalendarGrid />
+        <Events />
       </main>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  events: state.calendar.events,
-  year: state.calendar.year,
-  userIsSignIn: state.auth.isSignIn
+  year: state.calendar.year
 });
 
-const mapDispatchToProps = {
-  setYear,
-  getEvents
-};
+const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Calendar);
