@@ -125,12 +125,13 @@ class Calendar extends Component {
 
       let startDate = event.start.dateTime ? moment(event.start.dateTime) : moment(event.start.date);
       let endDate = event.end.dateTime ? moment(event.end.dateTime) : moment(event.end.date).subtract(1, 'd');
+      let day = startDate.clone();
 
-      for (;startDate.diff(endDate) <= 0; startDate.add(1, 'd')) {
-        if (startDate.year() !== this.props.year) continue;
+      for (;day.diff(endDate) <= 0; day.add(1, 'd')) {
+        if (day.year() !== this.props.year) continue;
 
-        let mId = startDate.month();  // month 0-11
-        let dId = startDate.date() -1;  // days 1-31
+        let mId = day.month();  // month 0-11
+        let dId = day.date() -1;  // days 1-31
 
         if (calendar[mId] === undefined || calendar[mId].days[dId] === undefined) continue;
 
@@ -138,7 +139,8 @@ class Calendar extends Component {
 
         calendar[mId].days[dId].events.push({
           title: event.summary,
-          id: eventId
+          id: eventId,
+          isFirstDay: day.diff(startDate) === 0 || day.date() === 1
         });
       }
     })

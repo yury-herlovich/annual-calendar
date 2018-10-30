@@ -1,8 +1,14 @@
 .event {
   width: 100%;
-  height: 10%;
-  min-height: 7px;
-  max-height: 10px;
+  height: 13px;
+  box-sizing: border-box;
   margin: 2px 0;
-  background-color: red;
+  padding: 0 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background-color: #de3141;
+  font-size: 10px;
+  font-weight: bold;
+  color: #ffffff;
 }
