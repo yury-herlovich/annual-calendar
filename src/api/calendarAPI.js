@@ -8,7 +8,9 @@ export function apiGetEvents(startDate, endDate) {
     key: process.env.REACT_APP_API_KEY,
     maxResults: 100,
     timeMax: endDate.toISOString(),
-    timeMin: startDate.toISOString()
+    timeMin: startDate.toISOString(),
+    singleEvents: true,
+    orderBy: 'startTime'
   }
 
   return sendApiRequest(path, method, params);

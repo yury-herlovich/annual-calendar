@@ -127,21 +127,50 @@ class Calendar extends Component {
       let endDate = event.end.dateTime ? moment(event.end.dateTime) : moment(event.end.date).subtract(1, 'd');
       let day = startDate.clone();
 
-      for (;day.diff(endDate) <= 0; day.add(1, 'd')) {
-        if (day.year() !== this.props.year) continue;
+      while (day.diff(endDate) <= 0) {
+        if (day.year() !== this.props.year) break;
 
         let mId = day.month();  // month 0-11
         let dId = day.date() -1;  // days 1-31
 
-        if (calendar[mId] === undefined || calendar[mId].days[dId] === undefined) continue;
+        if (calendar[mId] === undefined || calendar[mId].days[dId] === undefined) break;
 
-        _.remove(calendar[mId].days[dId].events, (item) => item.id === eventId);
+        let endMonth = day.clone().endOf('month');
+        let eventLength = 1;
 
-        calendar[mId].days[dId].events.push({
-          title: event.summary,
-          id: eventId,
-          isFirstDay: day.diff(startDate) === 0 || day.date() === 1
-        });
+        if (endDate.diff(endMonth, 'd') < 0) {
+          eventLength = endDate.diff(startDate, 'd') + 1;
+        } else {
+          eventLength = endMonth.diff(day, 'd') + 1;
+        }
+
+        // remove old event
+        for (let i = 0; i < eventLength; i++) {
+          _.remove(calendar[mId].days[dId + i].events, (item) => item.id === eventId);
+        }
+
+        let eventPosition = 0;
+
+        // insert event in each day
+        for (let i = 0; i < eventLength; i++) {
+          if (i === 0) {
+            eventPosition = this.calculateEventPosition(calendar, mId, dId);
+          }
+
+          if (calendar[mId].days[dId + i].events.length < eventPosition) {
+            let count = eventPosition - calendar[mId].days[dId + i].events.length;
+            calendar[mId].days[dId + i].events = calendar[mId].days[dId + i].events.concat(this.fillDayEvents(count));
+          }
+
+          calendar[mId].days[dId + i].events[eventPosition] = {
+            title: event.summary,
+            id: eventId,
+            eventLength,
+            dayNum: i
+          };
+        }
+
+        day.add(eventLength, 'd');
       }
     })
 
@@ -149,10 +178,37 @@ class Calendar extends Component {
   }
 
 
+  calculateEventPosition = (calendar, month, day) => {
+    let position = calendar[month].days[day].events.length;
+
+    for (let i = 0; i < calendar[month].days[day].events.length; i++) {
+      if (_.isEmpty(calendar[month].days[day].events[i])) {
+        position = i;
+      }
+
+      break;
+    }
+
+    return position;
+  }
+
+  fillDayEvents = (count) => {
+    let events = [];
+
+    for(let i = 0; i < count; i++) {
+      events.push({});
+    }
+
+    return events;
+  }
+
+
   handleModalOpen = (e, eventsIds) => {
     if (eventsIds.length <= 0) return;
 
-    let events = eventsIds.map((item) => this.props.events[item.id]);
+    let events = eventsIds
+      .map(item => this.props.events[item.id])
+      .filter(item => !_.isEmpty(item));
 
     this.setState({
       modalIsOpen: true,

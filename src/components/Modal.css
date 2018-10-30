@@ -1,3 +1,8 @@
+.ReactModalPortal {
+  position: relative;
+  z-index: 100;
+}
+
 .modal-event {
   margin: 30px 0;
 }

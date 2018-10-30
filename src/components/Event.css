@@ -1,14 +1,24 @@
-.event {
+.event,
+.empty-event {
   width: 100%;
   height: 13px;
-  box-sizing: border-box;
   margin: 2px 0;
+  position: relative;
+}
+
+.event {
+  box-sizing: border-box;
   padding: 0 2px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  background-color: #1ca868;;
+  background-color: #1ca868;
   font-size: 10px;
   font-weight: bold;
   color: #ffffff;
+  z-index: 1;
+}
+
+.empty-event {
+  z-index: 0;
 }
