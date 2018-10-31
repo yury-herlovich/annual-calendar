@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import './Calendar.css';
 
 import CalendarGrid from './Calendar/CalendarGrid';
-import Events from './Events/Events';
+import EventsContainer from './Events/EventsContainer';
 
 class Calendar extends Component {
   render() {
@@ -12,7 +12,7 @@ class Calendar extends Component {
     return (
       <main id="calendar">
         <CalendarGrid />
-        <Events />
+        <EventsContainer />
       </main>
     );
   }

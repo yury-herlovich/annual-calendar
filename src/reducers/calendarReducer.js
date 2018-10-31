@@ -2,13 +2,15 @@ import * as actionTypes from '../constants/actionTypes';
 
 const initialState = {
   year: null,
-  events: {},
+  events: [],
+  eventPosById: {},
   isLoading: false,
   googleClientLoaded: false
 }
 
-export default (state=initialState, action) => {
-  let events = {...state.events};
+export default (state = initialState, action) => {
+  let events = [...state.events];
+  let eventPosById = {...state.eventPosById};
 
   switch (action.type) {
 
@@ -31,13 +33,21 @@ export default (state=initialState, action) => {
       };
 
     case actionTypes.SET_EVENTS:
-      Object.keys(action.events).forEach((eventId) => {
-        events[eventId] = action.events[eventId];
-      })
+      action.events.forEach(event => {
+        let eventPos = state.eventPosById[event.id];
+
+        if (eventPos !== undefined) {
+          events[eventPos] = event;
+        } else {
+          eventPosById[event.id] = events.length;
+          events.push(event);
+        }
+      });
 
       return {
         ...state,
-        events
+        events,
+        eventPosById
       };
 
     case actionTypes.DELETE_EVENT:

@@ -27,11 +27,9 @@ export function getEvents(year) {
 
     apiGetEvents(startDate, endDate)
       .then(res => {
-        let events = {};
-
-        for (let event of res.result.items) {
-          events[event.id] = _.pick(event, ['id', 'htmlLink', 'description', 'end', 'start', 'summary']);
-        }
+        let events = res.result.items.map(event => (
+          _.pick(event, ['id', 'htmlLink', 'description', 'end', 'start', 'summary'])
+        ));
 
         dispatch({ type: actionTypes.SET_EVENTS, events });
         dispatch({ type: actionTypes.SET_LOADING, isLoading: false });
