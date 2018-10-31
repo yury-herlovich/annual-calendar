@@ -4,6 +4,7 @@ import './Calendar.css';
 
 import CalendarGrid from './Calendar/CalendarGrid';
 import EventsContainer from './Events/EventsContainer';
+import ModalContainer from './Modal/ModalContainer';
 
 class Calendar extends Component {
   render() {
@@ -13,6 +14,7 @@ class Calendar extends Component {
       <main id="calendar">
         <CalendarGrid />
         <EventsContainer />
+        <ModalContainer />
       </main>
     );
   }
