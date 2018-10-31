@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 
 import { getEvents } from '../../actions/calendarActions';
+import { openModalWindow } from '../../actions/modalActions';
 
 import './EventsContainer.css';
 import EventsRow from './EventsRow';
@@ -122,11 +123,17 @@ class EventsContainer extends Component {
     return position;
   }
 
+  handleEventClick = (e, eventIds) => {
+    if (eventIds.length === 0) return;
+
+    this.props.openModalWindow(eventIds, {x: e.screenX, y: e.screenY});
+  }
+
   render() {
     return (
       <section id="events">
         { this.state.events.map((item, i) => (
-          <EventsRow key={i} events={item} />
+          <EventsRow key={i} events={item} handleEventClick={this.handleEventClick}/>
         ))}
       </section>
     )
@@ -139,7 +146,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  getEvents
+  getEvents,
+  openModalWindow
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventsContainer);

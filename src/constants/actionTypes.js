@@ -8,3 +8,6 @@ export const DELETE_EVENT = 'DELETE_EVENT';
 export const GOOGLE_CLIENT_LOADED = 'GOOGLE_CLIENT_LOADED';
 export const USER_SIGN_IN = 'USER_SIGN_IN';
 export const USER_SIGN_OUT = 'USER_SIGN_OUT';
+
+export const MODAL_OPEN = 'MODAL_OPEN';
+export const MODAL_CLOSE = 'MODAL_CLOSE';

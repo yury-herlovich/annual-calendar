@@ -3,10 +3,10 @@ import './EventsRow.css';
 
 import Event from './Event';
 
-const EventsRow = ({events}) => (
+const EventsRow = ({events, handleEventClick}) => (
   <div className="events-row">
     { events.map(event => (
-      <Event event={event} key={event.id} />
+      <Event event={event} key={event.id} handleEventClick={handleEventClick} />
     ))}
   </div>
 );
