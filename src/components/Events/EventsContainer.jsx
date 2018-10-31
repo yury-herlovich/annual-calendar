@@ -83,7 +83,8 @@ class EventsContainer extends Component {
             id: event.id,
             title: event.summary,
             startDate: dayInd,
-            eventLength
+            eventLength,
+            rowPosition: this.findEventRowPosition(events[monthInd], dayInd, eventLength)
           })
         }
 
@@ -93,6 +94,33 @@ class EventsContainer extends Component {
     });
 
     this.setState({events});
+  }
+
+  findEventRowPosition = (events, eventStartDate, eventLength) => {
+    let position = 1;
+    let occupied = [];
+
+    let eventEndDate = eventStartDate + eventLength - 1;
+
+    events.forEach(event => {
+      let start = event.startDate;
+      let end = event.startDate + event.eventLength - 1;
+
+      if (eventEndDate >= start && eventEndDate <= end ||
+        eventStartDate >= start && eventStartDate <= end ) {
+        occupied.push(event.rowPosition);
+      }
+    });
+
+    while (true) {
+      if (occupied.indexOf(position) === -1) {
+        break;
+      }
+
+      position++;
+    }
+
+    return position;
   }
 
   render() {
