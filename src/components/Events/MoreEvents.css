@@ -10,6 +10,7 @@
   font-weight: bold;
   color: #333333;
   cursor: pointer;
+  /* align-self: end; */
 }
 
 .events-more:active {
