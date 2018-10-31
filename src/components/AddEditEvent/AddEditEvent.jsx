@@ -42,12 +42,14 @@ class AddEditEvent extends Component {
       return;
     }
 
-    // wdit event
+    // edit event
     let id = this.props.match.params.id;
-    let event = this.props.events[id];
+    let event = this.props.events.filter(event => event.id === id);
 
-    if (event !== undefined) {
-      this.setEventValues(event);
+
+
+    if (event[0] !== undefined) {
+      this.setEventValues(event[0]);
     } else {
       this.setState({id});
       this.props.getEvent(id);
@@ -62,8 +64,12 @@ class AddEditEvent extends Component {
       this.setState({redirect: true});
     }
 
-    if (id && prevProps.events[id] === undefined && this.props.events[id]) {
-      this.setEventValues(this.props.events[id]);
+    if (id && this.state.isLoading) {
+      let event = this.props.events.filter(event => event.id === id);
+
+      if (event[0] !== undefined) {
+        this.setEventValues(event[0]);
+      }
     }
   }
 
