@@ -51,11 +51,14 @@ export default (state = initialState, action) => {
       };
 
     case actionTypes.DELETE_EVENT:
-      delete events[action.id]
+      events.splice(eventPosById[action.id], 1);
+
+      delete eventPosById[action.id];
 
       return {
         ...state,
-        events
+        events,
+        eventPosById
       }
 
     case actionTypes.SET_LOADING:

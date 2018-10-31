@@ -46,9 +46,9 @@ export function getEvent(id) {
 
     apiGetEvent(id)
       .then((res) => {
-        let events = {
-          [id]: res.result
-        }
+        let events = [
+          _.pick(res.result, ['id', 'htmlLink', 'description', 'end', 'start', 'summary'])
+        ];
 
         dispatch({ type: actionTypes.SET_EVENTS, events });
         dispatch({ type: actionTypes.SET_LOADING, isLoading: false });
@@ -66,9 +66,9 @@ export function updateEvent(id, eventData) {
 
     apiPatchEvent(id, eventData)
       .then(res => {
-        let events = {
-          [id]: res.result
-        }
+        let events = [
+          _.pick(res.result, ['id', 'htmlLink', 'description', 'end', 'start', 'summary'])
+        ];
 
         dispatch({ type: actionTypes.SET_EVENTS, events });
         dispatch({ type: actionTypes.SET_LOADING, isLoading: false });
@@ -86,9 +86,9 @@ export function addEvent(eventData) {
 
     apiAddEvent(eventData)
       .then(res => {
-        let events = {
-          [res.result.id]: res.result
-        }
+        let events = [
+          _.pick(res.result, ['id', 'htmlLink', 'description', 'end', 'start', 'summary'])
+        ];
 
         dispatch({ type: actionTypes.SET_EVENTS, events });
         dispatch({ type: actionTypes.SET_LOADING, isLoading: false });
