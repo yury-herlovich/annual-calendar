@@ -33,7 +33,6 @@ class EventsContainer extends Component {
     }
 
     if (prevProps.storeEvents !== this.props.storeEvents) {
-      console.log('new events');
       this.setEvents(this.props.storeEvents);
     }
   }
@@ -106,8 +105,8 @@ class EventsContainer extends Component {
       let start = event.startDate;
       let end = event.startDate + event.eventLength - 1;
 
-      if (eventEndDate >= start && eventEndDate <= end ||
-        eventStartDate >= start && eventStartDate <= end ) {
+      if ((eventEndDate >= start && eventEndDate <= end) ||
+        (eventStartDate >= start && eventStartDate <= end) ) {
         occupied.push(event.rowPosition);
       }
     });
