@@ -1,0 +1,17 @@
+.events-more {
+  box-sizing: border-box;
+  margin-right: 1px;
+  padding: 0 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background-color: #ffffff;
+  font-size: 10px;
+  font-weight: bold;
+  color: #333333;
+  cursor: pointer;
+}
+
+.events-more:active {
+  background-color: #efefef;
+}
