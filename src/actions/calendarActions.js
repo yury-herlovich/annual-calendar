@@ -106,7 +106,7 @@ export function deleteEvent(id) {
 
     apiDeleteEvent(id)
       .then(() => {
-        dispatch({ type: actionTypes.DELETE_EVENT, id });
+        dispatch({ type: actionTypes.CLEAR_EVENTS });
         dispatch({ type: actionTypes.SET_LOADING, isLoading: false });
       }).catch(err => {
         console.log(err);

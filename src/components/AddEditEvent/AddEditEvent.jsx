@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import moment from 'moment';
-import _ from 'lodash';
 
 import AddEditForm from './AddEditForm';
 
@@ -60,7 +59,7 @@ class AddEditEvent extends Component {
     let id = this.state.id;
 
     // redirect after saving
-    if (this.state.isSaving && !_.isEqual(prevProps.events, this.props.events)) {
+    if (this.state.isSaving && !this.props.isLoading) {
       this.setState({redirect: true});
     }
 
@@ -160,7 +159,8 @@ class AddEditEvent extends Component {
 
 const mapStateToProps = state => ({
   year: state.calendar.year || new Date().getFullYear(),
-  events: state.calendar.events
+  events: state.calendar.events,
+  isLoading: state.calendar.isLoading
 })
 
 const mapDispatchToProps = {

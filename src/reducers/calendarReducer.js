@@ -29,7 +29,8 @@ export default (state = initialState, action) => {
     case actionTypes.CLEAR_EVENTS:
       return {
         ...state,
-        events: []
+        events: [],
+        eventPosById: {}
       };
 
     case actionTypes.SET_EVENTS:
@@ -49,17 +50,6 @@ export default (state = initialState, action) => {
         events,
         eventPosById
       };
-
-    case actionTypes.DELETE_EVENT:
-      events.splice(eventPosById[action.id], 1);
-
-      delete eventPosById[action.id];
-
-      return {
-        ...state,
-        events,
-        eventPosById
-      }
 
     case actionTypes.SET_LOADING:
       return {
