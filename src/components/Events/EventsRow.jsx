@@ -7,20 +7,39 @@ import MoreEvents from './MoreEvents';
 const showEventsCount = 2;
 
 const EventsRow = ({events, handleEventClick}) => {
-  let showedEvents = events.filter(event => event.rowPosition <= showEventsCount);
-  let hidEvents = events.filter(event => event.rowPosition > showEventsCount);
+  let showedEvents = [];
+  let hidEvents = [];
+  let showAll = true;
 
-  // { date: [ids]}
-  let hidEventsByDates = {};
-  hidEvents.forEach(event => {
-    for(let i = 0; i < event.eventLength; i++) {
-      if (hidEventsByDates[event.startDate + i] === undefined) {
-        hidEventsByDates[event.startDate + i] = [];
-      }
+  // seporate event array, and if there is a lot of events hide them
+  events.forEach(event => {
+    if (event.rowPosition <= showEventsCount) {
+      showedEvents.push(event);
+    } else {
+      hidEvents.push(event);
+    }
 
-      hidEventsByDates[event.startDate + i].push(event.id);
+    if (event.rowPosition > showEventsCount + 1) {
+      showAll = false;
     }
   });
+
+  // group hid events by dates, if it will be showed
+  let hidEventsByDates = {};
+  if (showAll) {
+    showedEvents = events;
+  } else {
+    // { date: [ids]}
+    hidEvents.forEach(event => {
+      for(let i = 0; i < event.eventLength; i++) {
+        if (hidEventsByDates[event.startDate + i] === undefined) {
+          hidEventsByDates[event.startDate + i] = [];
+        }
+
+        hidEventsByDates[event.startDate + i].push(event.id);
+      }
+    });
+  }
 
   return (
     <div className="events-row">
