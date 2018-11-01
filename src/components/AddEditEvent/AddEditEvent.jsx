@@ -97,6 +97,9 @@ class AddEditEvent extends Component {
   handleInputChange = (e) => {
     let value = e.target.type !== 'checkbox' ? e.target.value : e.target.checked;
     this.setState({[e.target.name]: value});
+
+    // check dates
+    this.checkDates(e.target.name, value);
   }
 
   handleSubmit = (e) => {
@@ -135,6 +138,22 @@ class AddEditEvent extends Component {
     if (c) {
       this.props.deleteEvent(this.state.id);
       this.setState({isSaving: true});
+    }
+  }
+
+  checkDates = (changedFieldName, value) => {
+    if (changedFieldName === 'startDate' || changedFieldName === 'startTime') {
+      let startDate = changedFieldName === 'startDate' ?
+                      moment(`${value} ${this.state.startTime}`) :
+                      moment(`${this.state.startDate} ${value}`);
+      let endDate = moment(`${this.state.endDate} ${this.state.endTime}`);
+
+      if (startDate.diff(endDate) > 0) {
+        this.setState({
+          endDate: startDate.format('YYYY-MM-DD'),
+          endTime: startDate.format('HH:mm')
+        });
+      }
     }
   }
 
