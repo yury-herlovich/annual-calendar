@@ -5,6 +5,11 @@
 
   tasks:
 
+  - name: Testing
+    shell: CI=true yarn test --env=jsdom
+    args:
+      chdir: ../
+
   - name: Biuld project
     shell: yarn run build
     args:
