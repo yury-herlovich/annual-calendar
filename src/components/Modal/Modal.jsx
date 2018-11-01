@@ -5,9 +5,11 @@ import { Icon } from '@blueprintjs/core';
 import { Link } from 'react-router-dom';
 import './Modal.css';
 
-ReactModal.setAppElement('#root');
+
 
 const Modal = ({modalPos, modalIsOpen, handleClose, events}) => {
+  ReactModal.setAppElement('#root');
+
   return (
     <ReactModal
       isOpen={modalIsOpen}
