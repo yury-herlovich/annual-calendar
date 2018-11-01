@@ -133,6 +133,8 @@ class EventsContainer extends Component {
   }
 
   render() {
+    if (!this.props.userIsSignIn) return null;
+
     return (
       <section id="events">
         { this.state.events.map((item, i) => (
