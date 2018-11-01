@@ -10,9 +10,12 @@ const Header = () => (
   <header id="main-header">
     <Auth />
 
+    {/* 'exact home' breaks down redirect after login  */}
     <Switch>
-      <Route exact path='/' component={CalendarPartial}/>
+      <Route path="/add" component={null} />
+      <Route path="/edit/:id" component={null} />
       <Route path='/year/:year' component={CalendarPartial}/>
+      <Route component={CalendarPartial}/>
     </Switch>
   </header>
 );

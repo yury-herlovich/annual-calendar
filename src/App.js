@@ -24,10 +24,10 @@ class App extends Component {
 
         {/* Content */}
         <Switch>
-          <Route exact path="/" component={Calendar} />
-          <Route path="/year/:year" component={Calendar} />
           <Route path="/add" component={AddEditEvent} />
           <Route path="/edit/:id" component={AddEditEvent} />
+          <Route path="/year/:year" component={Calendar} />
+          <Route component={Calendar} />
         </Switch>
       </div>
     );
