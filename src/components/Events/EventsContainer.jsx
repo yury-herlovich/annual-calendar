@@ -18,6 +18,8 @@ class EventsContainer extends Component {
   }
 
   componentDidMount = () => {
+    if (!this.props.userIsSignIn) return;
+
     let events = this.generateEventsGrid();
 
     this.setState({events});
@@ -26,7 +28,8 @@ class EventsContainer extends Component {
   }
 
   componentDidUpdate = (prevProps) => {
-    if (prevProps.year !== this.props.year) {
+    if ((!prevProps.userIsSignIn && this.props.userIsSignIn) ||
+        (this.props.userIsSignIn && prevProps.year !== this.props.year)) {
       this.props.getEvents(this.props.year);
 
       let events = this.generateEventsGrid();
@@ -142,7 +145,8 @@ class EventsContainer extends Component {
 
 const mapStateToProps = state => ({
   year: state.calendar.year,
-  storeEvents: state.calendar.events
+  storeEvents: state.calendar.events,
+  userIsSignIn: state.auth.isSignIn
 });
 
 const mapDispatchToProps = {
