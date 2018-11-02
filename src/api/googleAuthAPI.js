@@ -52,7 +52,7 @@ export async function userIsSignIn(signIn = false) {
   let tokenExpiration = user.getAuthResponse().expires_at - Date.now();
 
   // refresh token
-  if (tokenExpiration < -3600000) {
+  if (tokenExpiration < 2 * 6000) {
     await initGoogleClient();
   }
 
