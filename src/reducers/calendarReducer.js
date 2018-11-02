@@ -1,6 +1,6 @@
 import * as actionTypes from '../constants/actionTypes';
 
-const initialState = {
+export const initialState = {
   year: null,
   events: [],
   eventPosById: {},
