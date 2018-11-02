@@ -6,7 +6,7 @@
   tasks:
 
   - name: Testing
-    shell: CI=true yarn test --env=jsdom
+    shell: CI=true yarn test
     args:
       chdir: ../
 
