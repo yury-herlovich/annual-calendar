@@ -1,11 +1,11 @@
-# Calendar For The Year
+# Annaul Calendar
 Build with [React.js](https://reactjs.org)
 
 ## Installation
-* Git clone [this repo](https://github.com/yury-herlovich/calendar-for-the-year).
+* Git clone [this repo](https://github.com/yury-herlovich/annaul-calendar).
 * Move into the folder from your terminal:
 ```sh
-    cd calendar-for-the-year
+    cd annaul-calendar
 ```
 * Run `npm install` to install node dependencies.
 * Create file .env.local with GOOGLE API key, Google OAuth 2.0 client ID (Web application), Calendar ID ([OAuth2.0 documentation](https://developers.google.com/calendar/auth))
