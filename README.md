@@ -1,11 +1,11 @@
-# Annaul Calendar
+# Annual Calendar
 Build with [React.js](https://reactjs.org)
 
 ## Installation
-* Git clone [this repo](https://github.com/yury-herlovich/annaul-calendar).
+* Git clone [this repo](https://github.com/yury-herlovich/annual-calendar).
 * Move into the folder from your terminal:
 ```sh
-    cd annaul-calendar
+    cd annual-calendar
 ```
 * Run `npm install` to install node dependencies.
 * Create file .env.local with GOOGLE API key, Google OAuth 2.0 client ID (Web application), Calendar ID ([OAuth2.0 documentation](https://developers.google.com/calendar/auth))
