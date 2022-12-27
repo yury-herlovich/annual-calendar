@@ -1,6 +1,0 @@
-#calendar {
-  grid-row: 2;
-  display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: 1fr;
-}

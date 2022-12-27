@@ -1,0 +1,10 @@
+- [x] Header draft
+- [ ] Grid
+- [ ] Add auth
+- [ ] Add getting events
+- [ ] Change years
+- [ ] Add events
+- [ ] Remove events
+- [ ] Add colors to events
+- [ ] Deploy
+- [ ] Different grid

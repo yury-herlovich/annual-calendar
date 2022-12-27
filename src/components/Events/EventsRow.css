@@ -1,9 +1,0 @@
-.events-row {
-  grid-column: 2 / -1;
-  display: grid;
-  grid-template-columns: repeat(31, minmax(38px, 1fr));
-  grid-template-rows: repeat(3, 13px);
-  grid-row-gap: 1px;
-  padding-top: 13px;
-  padding-bottom: 1px;
-}
