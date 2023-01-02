@@ -1,12 +1,24 @@
-import React from 'react';
 // import { Route, Router, Routes } from 'react-router-dom';
+import styled from 'styled-components';
 import Header from './components/Header';
+import CalendarGrid from './components/CalendarGrid';
+
 import './App.css'
+
+const StyledWrapper = styled.main`
+  grid-row: 2;
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr;
+`
 
 function App() {
   return (
     <div className="App">
       <Header />
+      <StyledWrapper>
+        <CalendarGrid />
+      </StyledWrapper>
 
       {/* Content */}
       {/* <Router>
