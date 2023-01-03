@@ -1,38 +1,57 @@
-// import { Route, Router, Routes } from 'react-router-dom';
+import { lazy } from 'react';
+import { BrowserRouter as Router, Outlet, Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 import Header from './components/Header';
-import CalendarGrid from './components/CalendarGrid';
 
 import './App.css'
 
+const CalendarGrid = lazy(() => import("./components/CalendarGrid"))
+
+export type CalendarParams = {
+  year?: string
+}
+
+const StyledApp = styled.div`
+  display: grid;
+  box-sizing: border-box;
+  min-height: 100vh;
+  grid-template-rows: 45px 1fr;
+`
+
 const StyledWrapper = styled.main`
+  padding: 0 10px 10px 10px;
   grid-row: 2;
   display: grid;
   grid-template-rows: 1fr;
   grid-template-columns: 1fr;
 `
 
-function App() {
+function Template() {
   return (
-    <div className="App">
+    <>
       <Header />
       <StyledWrapper>
-        <CalendarGrid />
+        <Outlet />
       </StyledWrapper>
+    </>
+  )
+}
 
-      {/* Content */}
-      {/* <Router>
-        <Suspense fallback={<div>Loading...</div>}>
+function App() {
+  return (
+    <StyledApp>
+      <Router>
         <Routes>
-          <Route path="/add" component={AddEditEvent} />
-          <Route path="/edit/:id" component={AddEditEvent} />
-          <Route path="/year/:year" component={Calendar} />
-          <Route element={Calendar} />
+          {/* <Route path="/add" component={AddEditEvent} /> */}
+          {/* <Route path="/edit/:id" component={AddEditEvent} /> */}
+          <Route element={<Template />}>
+            <Route index element={<CalendarGrid />} />
+            <Route path="/year/:year" element={<CalendarGrid />} />
+          </Route>
         </Routes>
-        </Suspense>
-      </Router> */}
-    </div>
-  );
+      </Router>
+    </StyledApp>
+  )
 }
 
 export default App;

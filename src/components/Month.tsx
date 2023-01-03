@@ -28,7 +28,7 @@ export default function MonthGrid({ month }: { month: Month } ) {
     <StyledMonth key={`m-${month.month}`}>
       <StyledMonthHeader>{month.title}</StyledMonthHeader>
       {month.days.map((day, dInd) => (
-        <DayField day={day} />
+        <DayField day={day} key={`d-${dInd}`}/>
       ))}
     </StyledMonth>
   )
