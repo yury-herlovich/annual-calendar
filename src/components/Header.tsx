@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { CalendarParams } from '../App'
+import { useYear } from '../hooks/useYear'
 import Loading from './Loading'
 
 const StyledHeader = styled.header`
@@ -41,18 +40,13 @@ const StyledLink = styled(Link)`
 `
 
 function SelectYear() {
-  const { year = `${new Date().getFullYear()}` } = useParams<CalendarParams>()
-  const [ parsedYear, setYear ] = useState<number>(Number(year))
-
-  useEffect(() => {
-    setYear(Number(year))
-  }, [year])
+  const year = useYear()
 
   return (
     <StyledSelectYear>
-      <StyledLink to={`/year/${parsedYear - 1}`}>&lt;</StyledLink>
-      <StyledYear className="year-view">{parsedYear}</StyledYear>
-      <StyledLink to={`/year/${parsedYear + 1}`}>&gt;</StyledLink>
+      <StyledLink to={`/year/${year - 1}`}>&lt;</StyledLink>
+      <StyledYear className="year-view">{year}</StyledYear>
+      <StyledLink to={`/year/${year + 1}`}>&gt;</StyledLink>
     </StyledSelectYear>
   )
 }

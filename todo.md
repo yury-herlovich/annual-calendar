@@ -1,7 +1,7 @@
 - [x] Header draft
 - [x] Grid
 - [x] Set year
-- [ ] useYear?
+- [x] useYear?
 - [ ] Set today
 - [ ] Add auth
 - [ ] Add getting events
